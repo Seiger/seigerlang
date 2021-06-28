@@ -1,0 +1,38 @@
+<?php
+/**
+ * Список языков для мультиязычности
+ */
+return [
+    'ab' => ['name' => 'Абхазский',    'short' => 'Абх',      'ISO 639-1' => 'ab', 'ISO 639-3' => 'abk'],
+    'az' => ['name' => 'Azərbaycanca', 'short' => 'Azərb',    'ISO 639-1' => 'az', 'ISO 639-3' => 'aze'],
+    'en' => ['name' => 'English',      'short' => 'Eng',      'ISO 639-1' => 'en', 'ISO 639-3' => 'eng'],
+    'be' => ['name' => 'Беларуская',   'short' => 'Бел',      'ISO 639-1' => 'be', 'ISO 639-3' => 'bel'],
+    'bg' => ['name' => 'Български',    'short' => 'Бъл',      'ISO 639-1' => 'bg', 'ISO 639-3' => 'bul'],
+    'hu' => ['name' => 'Magyar',       'short' => 'Mag',      'ISO 639-1' => 'hu', 'ISO 639-3' => 'hun'],
+    'nl' => ['name' => 'Nederlands',   'short' => 'Ned',      'ISO 639-1' => 'nl', 'ISO 639-3' => 'nld'],
+    'el' => ['name' => 'Ελληνικά',     'short' => 'Ελληνικά', 'ISO 639-1' => 'el', 'ISO 639-3' => 'ell'],
+    'da' => ['name' => 'Dansk',        'short' => 'Dan',      'ISO 639-1' => 'da', 'ISO 639-3' => 'dan'],
+    'ga' => ['name' => 'Gaeilge',      'short' => 'Gae',      'ISO 639-1' => 'ga', 'ISO 639-3' => 'gle'],
+    'is' => ['name' => 'Íslenska',     'short' => 'Ísl',      'ISO 639-1' => 'is', 'ISO 639-3' => 'isl'],
+    'es' => ['name' => 'Español',      'short' => 'Esp',      'ISO 639-1' => 'es', 'ISO 639-3' => 'spa'],
+    'it' => ['name' => 'Italiano',     'short' => 'Ital',     'ISO 639-1' => 'it', 'ISO 639-3' => 'ita'],
+    'lv' => ['name' => 'Latviešu',     'short' => 'Latv',     'ISO 639-1' => 'lv', 'ISO 639-3' => 'lav'],
+    'lt' => ['name' => 'Lietuvių',     'short' => 'Liet',     'ISO 639-1' => 'lt', 'ISO 639-3' => 'lit'],
+    'de' => ['name' => 'Deutsch',      'short' => 'Deut',     'ISO 639-1' => 'de', 'ISO 639-3' => 'deu'],
+    'no' => ['name' => 'Norsk',        'short' => 'Norsk',    'ISO 639-1' => 'no', 'ISO 639-3' => 'nor'],
+    'pl' => ['name' => 'Polski',       'short' => 'Pols',     'ISO 639-1' => 'pl', 'ISO 639-3' => 'pol'],
+    'pt' => ['name' => 'Português',    'short' => 'Port',     'ISO 639-1' => 'pt', 'ISO 639-3' => 'por'],
+    'ro' => ['name' => 'Română',       'short' => 'Rom',      'ISO 639-1' => 'ro', 'ISO 639-3' => 'ron'],
+    'ru' => ['name' => 'Русский',      'short' => 'Рус',      'ISO 639-1' => 'ru', 'ISO 639-3' => 'rus'],
+    'sr' => ['name' => 'Srpski',       'short' => 'Srp',      'ISO 639-1' => 'sr', 'ISO 639-3' => 'srp'],
+    'sk' => ['name' => 'Slovenčina',   'short' => 'Slovenč',  'ISO 639-1' => 'sk', 'ISO 639-3' => 'slk'],
+    'sl' => ['name' => 'Slovenščina',  'short' => 'Slovenš',  'ISO 639-1' => 'sl', 'ISO 639-3' => 'slv'],
+    'ua' => ['name' => 'Українська',   'short' => 'Укр',      'ISO 639-1' => 'uk', 'ISO 639-3' => 'ukr'],
+    'fr' => ['name' => 'Français',     'short' => 'Fran',     'ISO 639-1' => 'fr', 'ISO 639-3' => 'fra'],
+    'hr' => ['name' => 'Hrvatski',     'short' => 'Hrv',      'ISO 639-1' => 'hr', 'ISO 639-3' => 'hrv'],
+    'cs' => ['name' => 'Čeština',      'short' => 'Češt',     'ISO 639-1' => 'cs', 'ISO 639-3' => 'ces'],
+    'sv' => ['name' => 'Svenska',      'short' => 'Sven',     'ISO 639-1' => 'sv', 'ISO 639-3' => 'swe'],
+    'et' => ['name' => 'Eesti',        'short' => 'Eest',     'ISO 639-1' => 'et', 'ISO 639-3' => 'est'],
+    'uz' => ['name' => 'Ўзбек',        'short' => 'Ўзбек',    'ISO 639-1' => 'uz', 'ISO 639-3' => 'uzb'],
+    'ja' => ['name' => '日本語',        'short' => '日本語',    'ISO 639-1' => 'ja', 'ISO 639-3' => 'jpn'],
+];
