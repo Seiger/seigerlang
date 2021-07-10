@@ -44,6 +44,10 @@ if ($e->name == 'OnWebPageInit' || $e->name == 'OnPageNotFound') {
     evolutionCMS()->setLocale($sLangDefault);
     evolutionCMS()->config['lang'] = $sLangDefault;
 
+    if (evolutionCMS()->config['s_lang_default'] != $sLangDefault || evolutionCMS()->config['s_lang_default_show'] == 1) {
+        evolutionCMS()->config['base_url'] .= $sLangDefault.'/';
+    }
+
     if (!isset($_GET['q']) || !trim($_GET['q'])) {
         $identifier = evolutionCMS()->config['site_start'];
     } else {
