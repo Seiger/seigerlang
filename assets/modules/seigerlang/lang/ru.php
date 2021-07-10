@@ -13,3 +13,7 @@ $_lang['slang_languages'] = 'Список языков сайта';
 $_lang['slang_must_contain'] = 'и должно содержать Язык по умолчанию';
 $_lang['slang_must_contain_lang'] = 'и должно содержать Язык по умолчанию а также значения из Списка языков';
 $_lang['slang_lang_front'] = 'Список языков фронтенда';
+$_lang['slang_example_usage'] = 'Используйте конструкцию <b>@lang(\'phrase\')</b> для встраивания фраз переводов в шаблон. Например <b>@lang(\'Привет Мир!\')</b>';
+$_lang['slang_synchronize'] = 'Синхронизировать';
+$_lang['slang_synchronize_help'] = 'Синхронизировать переводы шаблонов и БД сайта';
+$_lang['slang_auto_translate'] = 'Автоперевод';

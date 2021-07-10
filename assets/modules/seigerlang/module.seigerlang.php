@@ -2,9 +2,11 @@
 /**
  *	Модуль управления языками и доменами
  */
+
 if(!defined('IN_MANAGER_MODE') || IN_MANAGER_MODE != 'true') die("No access");
 
 require_once MODX_BASE_PATH . 'assets/modules/seigerlang/sLang.class.php';
+require_once MODX_BASE_PATH . 'assets/modules/seigerlang/models/sLangTranslate.php';
 
 $sLang  = new sLang();
 $evo    = evolutionCMS();
@@ -19,6 +21,13 @@ switch ($data['get']) {
     default:
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : "";
         switch ($action) {
+            case "synchronize":
+                // Парсинг Blade шаблонов
+                $sLang->parseBlade();
+                break;
+            case "translate":
+                $result = $sLang->getAutomaticTranslate($_POST['source'], $_POST['target']);
+                die($result);
             default:
                 break;
         }

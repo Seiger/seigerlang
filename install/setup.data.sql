@@ -1,10 +1,12 @@
 --
--- Структура таблицы `{PREFIX}s_lang`
+-- Структура таблицы `{PREFIX}s_translates`
 --
 
-CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang` (
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_translates` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `key` varchar(128) COMMENT 'Translate Key',
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_key` (`key`)
     ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

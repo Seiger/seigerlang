@@ -44,3 +44,13 @@
         </tbody>
     </table>
 </form>
+
+@push('scripts.bot')
+    <div id="actions">
+        <div class="btn-group">
+            <a href="javascript:;" class="btn btn-success" onclick="documentDirty=false;saveForm('#editForm');" title="{{$_lang["save_all_changes"]}}">
+                <i class="fa fa-save"></i>&emsp;<span>{{$_lang["save"]}}</span>
+            </a>
+        </div>
+    </div>
+@endpush

@@ -1,10 +1,11 @@
 <?php
 /**
- * Class sLang - Seiger Lang Management Module for Evolution CMS admin panel.
+ * Class SeigerLang - Seiger Lang Management Module for Evolution CMS admin panel.
  */
 
 use EvolutionCMS\Models\SystemSetting;
 use Illuminate\Support\Facades\View;
+use sLang\Models\sLangTranslate;
 
 if (!class_exists('sLang')) {
     class sLang
@@ -27,30 +28,6 @@ if (!class_exists('sLang')) {
             $this->tblSsystemSettings = $this->evo->getDatabase()->getFullTableName($this->tblSsystemSettings);
             $this->tblSiteContent = $this->evo->getDatabase()->getFullTableName($this->tblSiteContent);
             $this->tblLang = $this->evo->getDatabase()->getFullTableName($this->tblLang);
-        }
-
-        /**
-         * Рендер отображения
-         *
-         * @param $tpl
-         * @param array $data
-         * @return bool
-         */
-        public function view($tpl, $data = [])
-        {
-            global $_lang;
-            if (is_file($this->basePath.'lang/'.$this->evo->config['manager_language'].'.php')) {
-                require_once $this->basePath.'lang/'.$this->evo->config['manager_language'].'.php';
-            }
-
-            $data = array_merge($data, ['modx' => $this->evo, 'data' => $data, '_lang' => $_lang]);
-
-            View::getFinder()->setPaths([
-                MODX_BASE_PATH.'assets/modules/seigerlang/views',
-                MODX_MANAGER_PATH.'views'
-            ]);
-            echo View::make($tpl, $data);
-            return true;
         }
 
         /**
@@ -109,6 +86,18 @@ if (!class_exists('sLang')) {
                 $langFront = explode(',', $sLangFront);
             }
             return $langFront;
+        }
+
+        /**
+         * Список переводов БД
+         *
+         * @return array
+         */
+        public function dictionary()
+        {
+            $translates = sLangTranslate::all()->toArray();
+
+            return $translates;
         }
 
         /**
@@ -344,9 +333,185 @@ if (!class_exists('sLang')) {
             }
 
             /**
+             * Конфигурация файлов переводов
+             */
+            foreach ($langConfig as &$lang) {
+                if ($lang == 'ua') {
+                    $lang = 'uk';
+                }
+
+                if (!is_file(MODX_BASE_PATH.'core/lang/'.$lang.'.json')) {
+                    file_put_contents(MODX_BASE_PATH.'core/lang/'.$lang.'.json', '{}');
+                }
+            }
+
+            /**
              * Очистка кеша
              */
             return $this->evo->clearCache('full');
+        }
+
+        /**
+         * Парсинг переводов в шаблонах Blade
+         * @return bool
+         */
+        public function parseBlade():bool
+        {
+            $list = [];
+            $langDefault = $this->langDefault();
+            if (is_dir(MODX_BASE_PATH.'views')) {
+                $views = array_merge(glob(MODX_BASE_PATH.'views/*.blade.php'), glob(MODX_BASE_PATH.'views/*/*.blade.php'));
+
+                if (is_array($views) && count($views)) {
+                    foreach ($views as $view) {
+                        $data = file_get_contents($view);
+                        preg_match_all('/@lang\(\'.*\'\)/', $data, $match);
+
+                        if (is_array($match) && is_array($match[0]) && count($match[0])) {
+                            foreach ($match[0] as $item) {
+                                $list[] = str_replace(["@lang('", "')"], '', $item);
+                            }
+                        }
+                    }
+                }
+            }
+            $list = array_unique($list);
+
+            $sLangs = sLangTranslate::all()->pluck('key')->toArray();
+
+            $needs = array_diff($list, $sLangs);
+            if (count($needs)) {
+                foreach ($needs as &$need) {
+                    $sLangTranslate = new sLangTranslate();
+                    $sLangTranslate->key = $need;
+                    $sLangTranslate->{$langDefault} = $need;
+                    $sLangTranslate->save();
+                }
+            }
+
+            $this->updateLangFiles();
+
+            return true;
+        }
+
+        /**
+         * Получить автоматический перевод
+         *
+         * @param $source
+         * @param $target
+         * @return string
+         */
+        public function getAutomaticTranslate($source, $target):string
+        {
+            $result = '';
+            $langDefault = $this->langDefault();
+            $phrase = sLangTranslate::find($source);
+
+            if ($phrase) {
+                $text = $phrase[$langDefault];
+                $result = $this->googleTranslate($text, $langDefault, $target);
+            }
+
+            if (trim($result)) {
+                $phrase->{$target} = $result;
+                $phrase->save();
+            }
+
+            $this->updateLangFiles();
+
+            return $result;
+        }
+
+        /**
+         * Рендер отображения
+         *
+         * @param $tpl
+         * @param array $data
+         * @return bool
+         */
+        public function view($tpl, $data = [])
+        {
+            global $_lang;
+            if (is_file($this->basePath.'lang/'.$this->evo->config['manager_language'].'.php')) {
+                require_once $this->basePath.'lang/'.$this->evo->config['manager_language'].'.php';
+            }
+
+            $data = array_merge($data, ['modx' => $this->evo, 'data' => $data, '_lang' => $_lang]);
+
+            View::getFinder()->setPaths([
+                MODX_BASE_PATH.'assets/modules/seigerlang/views',
+                MODX_MANAGER_PATH.'views'
+            ]);
+            echo View::make($tpl, $data);
+            return true;
+        }
+
+        /**
+         * Обновить файлы переводов
+         */
+        protected function updateLangFiles():void
+        {
+            foreach ($this->langConfig() as &$lang) {
+                $json = sLangTranslate::all()->pluck($lang, 'key')->toJson();
+
+                if ($lang == 'ua') {
+                    $lang = 'uk';
+                }
+
+                file_put_contents(MODX_BASE_PATH.'core/lang/'.$lang.'.json', $json);
+            }
+        }
+
+        /**
+         * Получение переводов от Google
+         *
+         * @param $text
+         * @param string $source
+         * @param string $target
+         * @return string
+         */
+        protected function googleTranslate($text, $source = 'ru', $target = 'uk')
+        {
+            if ($source == 'ua') {$source = 'uk';}
+            if ($target == 'ua') {$target = 'uk';}
+
+            if ($source == $target) {
+                return $text;
+            }
+
+            $out = '';
+
+            // Google translate URL
+            $url = 'https://translate.google.com/translate_a/single?client=at&dt=t&dt=ld&dt=qca&dt=rm&dt=bd&dj=1&hl=uk-RU&ie=UTF-8&oe=UTF-8&inputm=2&otf=2&iid=1dd3b944-fa62-4b55-b330-74909a99969e';
+            $fields_string = 'sl=' . urlencode($source) . '&tl=' . urlencode($target) . '&q=' . urlencode($text) ;
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 3);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'AndroidTranslate/5.3.0.RC02.130475354-53000263 5.1 phone TRANSLATE_OPM5_TEST_1');
+
+            $result = curl_exec($ch);
+            $result = json_decode($result, TRUE);
+
+            if (isset($result['sentences'])) {
+                foreach ($result['sentences'] as $s) {
+                    $out .= isset($s['trans']) ? $s['trans'] : '';
+                }
+            } else {
+                $out = 'No result';
+            }
+
+            if(preg_match('%^\p{Lu}%u', $text) && !preg_match('%^\p{Lu}%u', $out)) { // Если оригинал с заглавной буквы то делаем и певерод с заглавной
+                $out = mb_strtoupper(mb_substr($out, 0, 1)) . mb_substr($out, 1);
+            }
+
+            return $out;
         }
 
         /**
