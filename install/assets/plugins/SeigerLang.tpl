@@ -7,8 +7,9 @@
  * @category    plugin
  * @version 0.1beta
  * @author  Seiger
- * @internal    @events OnDocFormTemplateRender,OnDocFormRender
+ * @internal    @events OnWebPageInit,OnPageNotFound,OnAfterLoadDocumentObject
  * @internal    @installset base, sample
  */
 
-require_once MODX_BASE_PATH."assets/modules/seigerlang/plugin/plugin.seigerlang.php";
+require MODX_BASE_PATH."assets/modules/seigerlang/sLang.class.php";
+require MODX_BASE_PATH."assets/modules/seigerlang/plugin/plugin.seigerlang.php";

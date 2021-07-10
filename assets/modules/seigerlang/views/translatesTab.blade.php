@@ -1,4 +1,4 @@
-<form action="{{$url}}&get=translates&action=save" method="post">
+<form action="{!!$url!!}&get=translates&action=save" method="post">
     <p>{!! $_lang['slang_example_usage'] !!}</p>
     <table class="table table-condensed table-striped table-bordered table-hover sectionTrans">
         <thead>
@@ -38,7 +38,7 @@
 @push('scripts.bot')
     <div id="actions">
         <div class="btn-group">
-            <a href="{{$url}}&get=translates&action=synchronize" class="btn btn-success" title="{{$_lang["slang_synchronize_help"]}}">
+            <a href="{!!$url!!}&get=translates&action=synchronize" class="btn btn-success" title="{{$_lang["slang_synchronize_help"]}}">
                 <i class="fa fa-save"></i>&emsp;<span>{{$_lang["slang_synchronize"]}}</span>
             </a>
         </div>

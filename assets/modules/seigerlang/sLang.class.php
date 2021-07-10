@@ -11,13 +11,13 @@ if (!class_exists('sLang')) {
     class sLang
     {
         public $evo;
+        public $siteContentFields = ['pagetitle', 'longtitle', 'description', 'introtext', 'content', 'menutitle'];
         protected $doc;
         protected $params;
         protected $basePath = MODX_BASE_PATH . 'assets/modules/seigerlang/';
         protected $tblSsystemSettings = 'system_settings';
         protected $tblSiteContent = 'site_content';
-        protected $tblLang = 's_lang';
-        protected $siteContentFields = ['pagetitle', 'longtitle', 'description', 'introtext', 'content', 'menutitle'];
+        protected $tblLang = 's_lang_translates';
 
         public function __construct($doc = [])
         {
@@ -336,10 +336,6 @@ if (!class_exists('sLang')) {
              * Конфигурация файлов переводов
              */
             foreach ($langConfig as &$lang) {
-                if ($lang == 'ua') {
-                    $lang = 'uk';
-                }
-
                 if (!is_file(MODX_BASE_PATH.'core/lang/'.$lang.'.json')) {
                     file_put_contents(MODX_BASE_PATH.'core/lang/'.$lang.'.json', '{}');
                 }
@@ -454,10 +450,6 @@ if (!class_exists('sLang')) {
             foreach ($this->langConfig() as &$lang) {
                 $json = sLangTranslate::all()->pluck($lang, 'key')->toJson();
 
-                if ($lang == 'ua') {
-                    $lang = 'uk';
-                }
-
                 file_put_contents(MODX_BASE_PATH.'core/lang/'.$lang.'.json', $json);
             }
         }
@@ -472,9 +464,6 @@ if (!class_exists('sLang')) {
          */
         protected function googleTranslate($text, $source = 'ru', $target = 'uk')
         {
-            if ($source == 'ua') {$source = 'uk';}
-            if ($target == 'ua') {$target = 'uk';}
-
             if ($source == $target) {
                 return $text;
             }
