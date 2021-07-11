@@ -2,7 +2,7 @@
 -- Структура таблицы `{PREFIX}s_translates`
 --
 
-CREATE TABLE IF NOT EXISTS `{PREFIX}s_translates` (
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `key` varchar(128) COMMENT 'Translate Key',
     `created_at` timestamp NULL DEFAULT NULL,
