@@ -251,6 +251,11 @@ if (!class_exists('sLang')) {
             /**
              * Настройка табов админки
              */
+            if (is_file(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.example.php')
+                && !is_file(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php')) {
+                copy(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.example.php',
+                    MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php');
+            }
             if (is_file(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php')) {
                 $custom_fields = [];
                 $custom_fields = include MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php';
