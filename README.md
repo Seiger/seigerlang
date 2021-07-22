@@ -10,19 +10,113 @@ Seiger Lang Management Module for Evolution CMS admin panel. Based on **template
 
 Если после настройки модуля, на вкладке редактировния ресурса не отобразились поля мультиязычности, тогда необходимо проверить файл *MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php'*
 ```php
+<?php global $_lang, $modx;
 return [
-    'pagetitle_ru' => [
-        'title' => $_lang['resource_title'].' (RU)',
-        'help' => $_lang['resource_title_help'],
-        'default' => '',
-        'save' => true
-    ],
-    'pagetitle_ua' => [
-        'title' => $_lang['resource_title'].' (UA)',
-        'help' => $_lang['resource_title_help'],
-        'default' => '',
-        'save' => true
-    ],
+	'pagetitle_en' => [
+		'title' => $_lang['resource_title'].' (EN)',
+		'help' => $_lang['resource_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'longtitle_en' => [
+		'title' => $_lang['long_title'].' (EN)',
+		'help' => $_lang['resource_long_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'description_en' => [
+		'title' => $_lang['resource_description'].' (EN)',
+		'help' => $_lang['resource_description_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'introtext_en' => [
+		'title' => $_lang['resource_summary'].' (EN)',
+		'help' => $_lang['resource_summary_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'content_en' => [
+		'title' => $_lang['resource_content'].' (EN)',
+		'default' => '',
+		'save' => true,
+	],
+	'menutitle_en' => [
+		'title' => $_lang['resource_opt_menu_title'].' (EN)',
+		'help' => $_lang['resource_opt_menu_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'pagetitle_ru' => [
+		'title' => $_lang['resource_title'].' (RU)',
+		'help' => $_lang['resource_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'longtitle_ru' => [
+		'title' => $_lang['long_title'].' (RU)',
+		'help' => $_lang['resource_long_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'description_ru' => [
+		'title' => $_lang['resource_description'].' (RU)',
+		'help' => $_lang['resource_description_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'introtext_ru' => [
+		'title' => $_lang['resource_summary'].' (RU)',
+		'help' => $_lang['resource_summary_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'content_ru' => [
+		'title' => $_lang['resource_content'].' (RU)',
+		'default' => '',
+		'save' => true,
+	],
+	'menutitle_ru' => [
+		'title' => $_lang['resource_opt_menu_title'].' (RU)',
+		'help' => $_lang['resource_opt_menu_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'pagetitle_ua' => [
+		'title' => $_lang['resource_title'].' (UA)',
+		'help' => $_lang['resource_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'longtitle_ua' => [
+		'title' => $_lang['long_title'].' (UA)',
+		'help' => $_lang['resource_long_title_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'description_ua' => [
+		'title' => $_lang['resource_description'].' (UA)',
+		'help' => $_lang['resource_description_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'introtext_ua' => [
+		'title' => $_lang['resource_summary'].' (UA)',
+		'help' => $_lang['resource_summary_help'],
+		'default' => '',
+		'save' => true,
+	],
+	'content_ua' => [
+		'title' => $_lang['resource_content'].' (UA)',
+		'default' => '',
+		'save' => true,
+	],
+	'menutitle_ua' => [
+		'title' => $_lang['resource_opt_menu_title'].' (UA)',
+		'help' => $_lang['resource_opt_menu_title_help'],
+		'default' => '',
+		'save' => true,
+	],
 ];
 ```
 
