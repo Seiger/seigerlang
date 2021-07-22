@@ -7,6 +7,30 @@ use EvolutionCMS\Facades\UrlProcessor;
 
 $e = evolutionCMS()->event;
 
+if ($e->name == 'OnDocFormSave') {
+    if (!empty($e->params['id'])) {
+        $sLang  = new sLang();
+        $sLangDefault = $sLang->langDefault();
+        $data = [];
+
+        foreach ($sLang->siteContentFields as $siteContentField) {
+            if (isset($_REQUEST[$siteContentField])) {
+                $value = $_REQUEST[$siteContentField.'_'.$sLangDefault];
+                if (!is_null($value) && !empty($value)) {
+                    if (is_array($value)) {
+                        $value = implode('||', $value);
+                    }
+                    $data[$siteContentField] = evolutionCMS()->db->escape($value);
+                }
+            }
+        }
+
+        if (!empty($data)) {
+            evolutionCMS()->db->update($data, '[+prefix+]site_content', 'id=' . $e->params['id']);
+        }
+    }
+}
+
 /**
  * Подмена стандартных полей на мультиязычные
  */

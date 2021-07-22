@@ -7,7 +7,7 @@
  * @category    plugin
  * @version 0.1beta
  * @author  Seiger
- * @internal    @events OnWebPageInit,OnPageNotFound,OnAfterLoadDocumentObject
+ * @internal    @events OnWebPageInit,OnPageNotFound,OnAfterLoadDocumentObject,OnDocFormSave
  * @internal    @installset base, sample
  */
 
