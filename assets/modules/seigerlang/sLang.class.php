@@ -273,17 +273,23 @@ if (!class_exists('sLang')) {
 
                 if (isset($custom_fields['createdon'])) {
                     unset($custom_fields['createdon']);
-                    $custom_fields['createdon'] = [
+                    $createdon = [
                         'default' => '$modx->toDateFormat(time())',
                         'save' => 'true',
                         'prepareSave' => 'function ($data, $modx) {'."\r\n".
                             "\t\t\t".'if (!empty($data)) {'."\r\n".
-                                "\t\t\t\t".'return $modx->toTimeStamp($data);'."\r\n".
+                            "\t\t\t\t".'return $modx->toTimeStamp($data);'."\r\n".
                             "\t\t\t".'} else {'."\r\n".
-                                "\t\t\t\t".'return time();'."\r\n".
+                            "\t\t\t\t".'return time();'."\r\n".
                             "\t\t\t".'}'."\r\n".
-                        "\t\t".'}'
+                            "\t\t".'}'
                     ];
+                }
+                if (isset($custom_fields['deleted'])) {
+                    unset($custom_fields['deleted']);
+                }
+                if (isset($custom_fields['custom_field'])) {
+                    unset($custom_fields['custom_field']);
                 }
 
                 foreach ($langConfig as &$lang) {
@@ -322,6 +328,10 @@ if (!class_exists('sLang')) {
                         'default' => "''",
                         'save' => 'true'
                     ];
+                }
+
+                if (isset($createdon)) {
+                    $custom_fields['createdon'] = $createdon;
                 }
 
                 $f = fopen(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php', "w");
