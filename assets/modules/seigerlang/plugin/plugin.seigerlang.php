@@ -25,6 +25,14 @@ if ($e->name == 'OnDocFormSave') {
             }
         }
 
+        if (isset($_REQUEST['alias']) && !trim($_REQUEST['alias'])) {
+            if (isset($_REQUEST['pagetitle_en']) && trim($_REQUEST['pagetitle_en'])) {
+                $data['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['pagetitle_en'])));
+            } else {
+                $data['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['pagetitle'])));
+            }
+        }
+
         if (!empty($data)) {
             evolutionCMS()->db->update($data, '[+prefix+]site_content', 'id=' . $e->params['id']);
         }
