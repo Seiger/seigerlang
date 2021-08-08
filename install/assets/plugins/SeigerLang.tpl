@@ -5,7 +5,7 @@
  * sLang
  *
  * @category    plugin
- * @version 0.1beta
+ * @version 1.0
  * @author  Seiger
  * @internal    @events OnWebPageInit,OnPageNotFound,OnAfterLoadDocumentObject,OnDocFormSave
  * @internal    @installset base, sample

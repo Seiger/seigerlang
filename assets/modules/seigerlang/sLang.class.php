@@ -1,6 +1,6 @@
 <?php
 /**
- * Class SeigerLang - Seiger Lang Management Module for Evolution CMS admin panel.
+ * Class sLang - Seiger Lang Management Module for Evolution CMS admin panel.
  */
 
 use EvolutionCMS\Models\SystemSetting;

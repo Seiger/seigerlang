@@ -5,7 +5,7 @@
  * Seiger Lang Management Module
  *
  * @category	module
- * @version	0.1beta
+ * @version	1.0
  * @author	Seiger
  * @lastupdate	28/06/2021
  * @license	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)

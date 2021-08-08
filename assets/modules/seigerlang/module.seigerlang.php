@@ -1,6 +1,6 @@
 <?php
 /**
- *	Модуль управления языками и доменами
+ *	Модуль управления переводами на сайте
  */
 
 if(!defined('IN_MANAGER_MODE') || IN_MANAGER_MODE != 'true') die("No access");

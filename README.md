@@ -15,6 +15,11 @@ Seiger Lang Management Module for Evolution CMS admin panel. Based on **template
 ```php
     @lang('phrase')
 ```
+
+список языков фронтенд:
+```php
+    [(s_lang_front)]
+```
 ## Настройка ##
 Этот модуль использует плагин **templatesEdit3** для отображения мультиязычных полей контента в админке сайта.
 
