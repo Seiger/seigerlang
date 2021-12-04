@@ -95,7 +95,7 @@ if (!class_exists('sLang')) {
          */
         public function dictionary()
         {
-            $translates = sLangTranslate::all()->toArray();
+            $translates = sLangTranslate::all()->sortByDesc('id')->toArray();
 
             return $translates;
         }
@@ -273,7 +273,7 @@ if (!class_exists('sLang')) {
 
                 if (isset($custom_fields['createdon'])) {
                     unset($custom_fields['createdon']);
-                    $createdon = [
+                    $custom_fields['createdon'] = [
                         'default' => '$modx->toDateFormat(time())',
                         'save' => 'true',
                         'prepareSave' => 'function ($data, $modx) {'."\r\n".
@@ -284,12 +284,6 @@ if (!class_exists('sLang')) {
                             "\t\t\t".'}'."\r\n".
                             "\t\t".'}'
                     ];
-                }
-                if (isset($custom_fields['deleted'])) {
-                    unset($custom_fields['deleted']);
-                }
-                if (isset($custom_fields['custom_field'])) {
-                    unset($custom_fields['custom_field']);
                 }
 
                 foreach ($langConfig as &$lang) {
@@ -328,10 +322,6 @@ if (!class_exists('sLang')) {
                         'default' => "''",
                         'save' => 'true'
                     ];
-                }
-
-                if (isset($createdon)) {
-                    $custom_fields['createdon'] = $createdon;
                 }
 
                 $f = fopen(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php', "w");
@@ -429,6 +419,31 @@ if (!class_exists('sLang')) {
             }
 
             $this->updateLangFiles();
+
+            return $result;
+        }
+
+        /**
+         * Обновить поле перевода
+         *
+         * @param $source
+         * @param $target
+         * @param $value
+         * @return bool
+         */
+        public function updateTranslate($source, $target, $value):bool
+        {
+            $result = false;
+            $phrase = sLangTranslate::find($source);
+
+            if ($phrase) {
+                $phrase->{$target} = $value;
+                $phrase->update();
+
+                $this->updateLangFiles();
+
+                $result = true;
+            }
 
             return $result;
         }

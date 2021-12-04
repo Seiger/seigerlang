@@ -10,7 +10,7 @@
         </tr>
         </thead>
         <tbody>
-            @foreach($sLang->dictionary() as $dictionary)
+        @foreach($sLang->dictionary() as $dictionary)
             <tr>
                 <td>{{$dictionary['key']}}</td>
                 @foreach($sLang->langConfig() as $langConfig)
@@ -30,7 +30,7 @@
                     </td>
                 @endforeach
             </tr>
-            @endforeach
+        @endforeach
         </tbody>
     </table>
 </form>
@@ -56,6 +56,19 @@
                 success: function (ajax) {
                     _this.find('input').val(ajax);
                 }
+            });
+        });
+
+        jQuery(".sectionTrans").on("blur", "input", function () {
+            var _this = $(this).parents('td');
+            var source = _this.data('id');
+            var target = _this.data('lang');
+            var _value = _this.find('input').val();
+
+            jQuery.ajax({
+                url: '{!!$url!!}&get=translates&action=update',
+                type: 'POST',
+                data: 'source=' + source + '&target=' + target + '&value=' + _value,
             });
         });
     </script>

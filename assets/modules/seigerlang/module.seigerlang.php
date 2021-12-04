@@ -1,6 +1,6 @@
 <?php
 /**
- *	Модуль управления переводами на сайте
+ *	Модуль управления языками и доменами
  */
 
 if(!defined('IN_MANAGER_MODE') || IN_MANAGER_MODE != 'true') die("No access");
@@ -27,6 +27,9 @@ switch ($data['get']) {
                 break;
             case "translate":
                 $result = $sLang->getAutomaticTranslate($_POST['source'], $_POST['target']);
+                die($result);
+            case "update":
+                $result = $sLang->updateTranslate($_POST['source'], $_POST['target'], $_POST['value']);
                 die($result);
             default:
                 break;
