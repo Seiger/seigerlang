@@ -1,9 +1,10 @@
 <?php
 /**
- * Class sLang - Seiger Lang Management Module for Evolution CMS admin panel.
+ * Class SeigerLang - Seiger Lang Management Module for Evolution CMS admin panel.
  */
 
 use EvolutionCMS\Models\SystemSetting;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use sLang\Models\sLangTranslate;
 
@@ -12,6 +13,7 @@ if (!class_exists('sLang')) {
     {
         public $evo;
         public $siteContentFields = ['pagetitle', 'longtitle', 'description', 'introtext', 'content', 'menutitle'];
+        public $url;
         protected $doc;
         protected $params;
         protected $basePath = MODX_BASE_PATH . 'assets/modules/seigerlang/';
@@ -24,10 +26,13 @@ if (!class_exists('sLang')) {
             $this->doc = $doc;
             $this->evo = evolutionCMS();
             $this->params = $this->evo->event->params;
+            $this->url = 'index.php?a=112&id='.$_REQUEST['id'];
 
             $this->tblSsystemSettings = $this->evo->getDatabase()->getFullTableName($this->tblSsystemSettings);
             $this->tblSiteContent = $this->evo->getDatabase()->getFullTableName($this->tblSiteContent);
             $this->tblLang = $this->evo->getDatabase()->getFullTableName($this->tblLang);
+
+            Paginator::defaultView('pagination');
         }
 
         /**
@@ -95,7 +100,8 @@ if (!class_exists('sLang')) {
          */
         public function dictionary()
         {
-            $translates = sLangTranslate::all()->sortByDesc('id')->toArray();
+            $translates = sLangTranslate::orderByDesc('id')->paginate(30);
+            $translates->withPath($this->url);
 
             return $translates;
         }

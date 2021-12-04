@@ -11,8 +11,8 @@ require_once MODX_BASE_PATH . 'assets/modules/seigerlang/models/sLangTranslate.p
 $sLang  = new sLang();
 $evo    = evolutionCMS();
 $data['get']    = isset($_REQUEST['get']) ? $_REQUEST['get'] : "translates";
-$data['url']    = "index.php?a=112&id=".$_REQUEST['id']."";
 $data['sLang']  = $sLang;
+$data['url']    = $sLang->url;
 $tbl_system_settings  = $evo->getDatabase()->getFullTableName('system_settings');
 $tbl_site_content     = $evo->getDatabase()->getFullTableName('site_content');
 $tbl_a_lang           = $evo->getDatabase()->getFullTableName('s_lang');

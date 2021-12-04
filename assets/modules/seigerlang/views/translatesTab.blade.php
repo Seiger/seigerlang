@@ -34,6 +34,7 @@
         </tbody>
     </table>
 </form>
+{{ $sLang->dictionary()->render() }}
 
 @push('scripts.bot')
     <div id="actions">
