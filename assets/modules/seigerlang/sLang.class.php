@@ -212,7 +212,7 @@ if (!class_exists('sLang')) {
                             }
 
                             $default = "DEFAULT ''";
-                            if ($f['Default'] === null) {
+                            if ($f['Default'] === null && $f['Type'] != 'text' && $f['Type'] != 'longtext') {
                                 $default = 'DEFAULT NULL';
                             }
                             $needs[] = "ADD `{$siteContentField}_{$lang}` {$f['Type']} {$null} {$default} COMMENT '{$siteContentField} for {$lang} sLang version'";
@@ -296,36 +296,36 @@ if (!class_exists('sLang')) {
                     $custom_fields['pagetitle_'.$lang] = [
                         'title' => '$_lang[\'resource_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_title_help\']',
-                        'default' => "''",
+                        'default' => "",
                         'save' => 'true'
                     ];
                     $custom_fields['longtitle_'.$lang] = [
                         'title' => '$_lang[\'long_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_long_title_help\']',
-                        'default' => "''",
+                        'default' => "",
                         'save' => 'true'
                     ];
                     $custom_fields['description_'.$lang] = [
                         'title' => '$_lang[\'resource_description\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_description_help\']',
-                        'default' => "''",
+                        'default' => "",
                         'save' => 'true'
                     ];
                     $custom_fields['introtext_'.$lang] = [
                         'title' => '$_lang[\'resource_summary\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_summary_help\']',
-                        'default' => "''",
+                        'default' => "",
                         'save' => 'true'
                     ];
                     $custom_fields['content_'.$lang] = [
                         'title' => '$_lang[\'resource_content\'].\' ('.strtoupper($lang).')\'',
-                        'default' => "''",
+                        'default' => "",
                         'save' => 'true'
                     ];
                     $custom_fields['menutitle_'.$lang] = [
                         'title' => '$_lang[\'resource_opt_menu_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_opt_menu_title_help\']',
-                        'default' => "''",
+                        'default' => "",
                         'save' => 'true'
                     ];
                 }
@@ -335,6 +335,9 @@ if (!class_exists('sLang')) {
                 foreach ($custom_fields as $key => $item) {
                     fwrite($f, "\t'".$key."' => [\r\n");
                     foreach ($item as $name => $value) {
+                        if (mb_substr($value, 0, 1) != '$' && !is_numeric($value) && !is_bool($value)) {
+                            $value = "'".$value."'";
+                        }
                         fwrite($f, "\t\t'".$name."' => ".$value.",\r\n");
                     }
                     fwrite($f, "\t],\r\n");
