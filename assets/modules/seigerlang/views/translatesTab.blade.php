@@ -1,38 +1,40 @@
 <form action="{!!$url!!}&get=translates&action=save" method="post">
     <p>{!! $_lang['slang_example_usage'] !!}</p>
-    <table class="table table-condensed table-striped table-bordered table-hover sectionTrans">
-        <thead>
-        <tr>
-            <td style="text-align:center !important;"><b>KEY</b></td>
-            @foreach($sLang->langConfig() as $langConfig)
-                <td style="text-align:center !important;"><b>{{strtoupper($langConfig)}}</b></td>
-            @endforeach
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($sLang->dictionary() as $dictionary)
+    <div class="table-responsive langTable">
+        <table class="table table-condensed table-hover sectionTrans">
+            <thead>
             <tr>
-                <td>{{$dictionary['key']}}</td>
+                <td style="text-align:center !important;"><b>KEY</b></td>
                 @foreach($sLang->langConfig() as $langConfig)
-                    <td data-id="{{$dictionary['id']}}" data-lang="{{$langConfig}}">
-                        @if($langConfig == $sLang->langDefault())
-                            <input type="text" class="form-control" name="sLang[{{$dictionary['id']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
-                        @else
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="sLang[{{$dictionary['id']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
-                                <span class="input-group-btn">
-                                    <button style="padding: 0 5px;" class="btn btn-light js_translate" type="button" title="{{$_lang['slang_auto_translate']}} {{strtoupper($sLang->langDefault())}} => {{strtoupper($langConfig)}}" title="{{$_lang['slang_auto_translate']}}">
-                                        <i class="fa fa-language" style="font-size: xx-large;"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        @endif
-                    </td>
+                    <td style="text-align:center !important;"><b>{{strtoupper($langConfig)}}</b></td>
                 @endforeach
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach($sLang->dictionary() as $dictionary)
+                <tr>
+                    <td>{{$dictionary['key']}}</td>
+                    @foreach($sLang->langConfig() as $langConfig)
+                        <td data-id="{{$dictionary['id']}}" data-lang="{{$langConfig}}">
+                            @if($langConfig == $sLang->langDefault())
+                                <input type="text" class="form-control" name="sLang[{{$dictionary['id']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
+                            @else
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="sLang[{{$dictionary['id']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
+                                    <span class="input-group-btn">
+                                        <button style="padding: 0 5px;" class="btn btn-light js_translate" type="button" title="{{$_lang['slang_auto_translate']}} {{strtoupper($sLang->langDefault())}} => {{strtoupper($langConfig)}}" title="{{$_lang['slang_auto_translate']}}">
+                                            <i class="fa fa-language" style="font-size: xx-large;"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            @endif
+                        </td>
+                    @endforeach
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 </form>
 {{ $sLang->dictionary()->render() }}
 
@@ -73,4 +75,10 @@
             });
         });
     </script>
+    <style>
+        .langTable {margin-left: 20%; width: 80%;}
+        .langTable table {width: {{count($sLang->langConfig())*25+35}}%;}
+        .langTable td:first-child {vertical-align: middle; position: fixed; width: 20%; margin-left: -20%;}
+        .langTable tbody td:first-child {padding-top: 10px;}
+    </style>
 @endpush

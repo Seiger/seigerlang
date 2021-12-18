@@ -35,4 +35,6 @@ return [
     'et' => ['name' => 'Eesti',        'short' => 'Eest',     'ISO 639-1' => 'et', 'ISO 639-3' => 'est'],
     'uz' => ['name' => 'Ўзбек',        'short' => 'Ўзбек',    'ISO 639-1' => 'uz', 'ISO 639-3' => 'uzb'],
     'ja' => ['name' => '日本語',        'short' => '日本語',    'ISO 639-1' => 'ja', 'ISO 639-3' => 'jpn'],
+    'zh-hant' => ['name' => '繁體中文',        'short' => '繁體中文',    'ISO 639-1' => 'zh', 'ISO 639-3' => 'zh-TW'],
+    'zh-hans' => ['name' => '简体中文',        'short' => '简体中文',    'ISO 639-1' => 'zh', 'ISO 639-3' => 'zh-CN'],
 ];
