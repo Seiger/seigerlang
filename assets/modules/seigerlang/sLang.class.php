@@ -26,7 +26,7 @@ if (!class_exists('sLang')) {
             $this->doc = $doc;
             $this->evo = evolutionCMS();
             $this->params = $this->evo->event->params;
-            $this->url = 'index.php?a=112&id='.$_REQUEST['id'];
+            $this->url = sLangTranslate::moduleUrl();
 
             $this->tblSsystemSettings = $this->evo->getDatabase()->getFullTableName($this->tblSsystemSettings);
             $this->tblSiteContent = $this->evo->getDatabase()->getFullTableName($this->tblSiteContent);
