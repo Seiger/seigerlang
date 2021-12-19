@@ -3,6 +3,7 @@
  * Class SeigerLang - Seiger Lang Management Module for Evolution CMS admin panel.
  */
 
+use EvolutionCMS\Models\SiteModule;
 use EvolutionCMS\Models\SystemSetting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
@@ -26,7 +27,7 @@ if (!class_exists('sLang')) {
             $this->doc = $doc;
             $this->evo = evolutionCMS();
             $this->params = $this->evo->event->params;
-            $this->url = sLangTranslate::moduleUrl();
+            $this->url = $this->moduleUrl();
 
             $this->tblSsystemSettings = $this->evo->getDatabase()->getFullTableName($this->tblSsystemSettings);
             $this->tblSiteContent = $this->evo->getDatabase()->getFullTableName($this->tblSiteContent);
@@ -570,6 +571,12 @@ if (!class_exists('sLang')) {
             }
 
             return $return;
+        }
+
+        protected function moduleUrl ()
+        {
+            $module = SiteModule::whereName('sLang')->first();
+            return 'index.php?a=112&id='.$module->id;
         }
     }
 }
