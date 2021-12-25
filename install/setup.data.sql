@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_key` (`key`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1 ;
+    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -18,19 +18,20 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
 --
 
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_content` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `resource` int(11) NOT NULL COMMENT 'Resource ID',
-    `pagetitle` varchar(255) COMMENT 'Translate pagetitle',
-    `longtitle` varchar(255) COMMENT 'Translate longtitle',
-    `description` varchar(255) COMMENT 'Translate description',
+    `id` int NOT NULL AUTO_INCREMENT,
+    `resource` int NOT NULL COMMENT 'Resource ID',
+    `lang` varchar(8) NOT NULL COMMENT 'Translate lang key',
+    `pagetitle` varchar(255) DEFAULT '' COMMENT 'Translate pagetitle',
+    `longtitle` varchar(255) DEFAULT '' COMMENT 'Translate longtitle',
+    `description` varchar(255) DEFAULT '' COMMENT 'Translate description',
     `introtext` text COMMENT 'Translate introtext',
     `content` longtext COMMENT 'Translate content',
-    `menutitle` varchar(255) COMMENT 'Translate menutitle',
+    `menutitle` varchar(255) DEFAULT '' COMMENT 'Translate menutitle',
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `idx_key` (`key`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1 ;
+    UNIQUE KEY `resource_lang` (`resource`,`lang`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
