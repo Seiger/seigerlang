@@ -9,7 +9,28 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_key` (`key`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Таблица переводов ресурса `{PREFIX}s_lang_content`
+--
+
+CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_content` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `resource` int(11) NOT NULL COMMENT 'Resource ID',
+    `pagetitle` varchar(255) COMMENT 'Translate pagetitle',
+    `longtitle` varchar(255) COMMENT 'Translate longtitle',
+    `description` varchar(255) COMMENT 'Translate description',
+    `introtext` text COMMENT 'Translate introtext',
+    `content` longtext COMMENT 'Translate content',
+    `menutitle` varchar(255) COMMENT 'Translate menutitle',
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_key` (`key`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
