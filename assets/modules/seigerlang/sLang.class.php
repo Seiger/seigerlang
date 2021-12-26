@@ -3,10 +3,13 @@
  * Class SeigerLang - Seiger Lang Management Module for Evolution CMS admin panel.
  */
 
+require_once MODX_BASE_PATH . 'assets/modules/seigerlang/models/sLangContent.php';
+
 use EvolutionCMS\Models\SiteModule;
 use EvolutionCMS\Models\SystemSetting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
+use sLang\Models\sLangContent;
 use sLang\Models\sLangTranslate;
 
 if (!class_exists('sLang')) {
@@ -189,46 +192,6 @@ if (!class_exists('sLang')) {
             $langConfig = $this->langConfig();
 
             /**
-             * Модификация контентной таблицы
-             */
-            $columns = [];
-            $needs = [];
-            $query = $this->evo->getDatabase()->query("DESCRIBE {$this->tblSiteContent}");
-
-            if ($query) {
-                $fields = $this->evo->getDatabase()->makeArray($query);
-
-                foreach ($fields as &$field) {
-                    $columns[$field['Field']] = $field;
-                }
-
-                foreach ($langConfig as &$lang) {
-                    foreach ($this->siteContentFields as &$siteContentField) {
-                        if (!isset($columns[$siteContentField.'_'.$lang])) {
-                            $f = $columns[$siteContentField];
-
-                            $null = 'NULL';
-                            if ($f['Null'] == 'NO') {
-                                $null = 'NOT NULL';
-                            }
-
-                            $default = "DEFAULT ''";
-                            if ($f['Default'] === null && $f['Type'] != 'text' && $f['Type'] != 'longtext') {
-                                $default = 'DEFAULT NULL';
-                            }
-                            $needs[] = "ADD `{$siteContentField}_{$lang}` {$f['Type']} {$null} {$default} COMMENT '{$siteContentField} for {$lang} sLang version'";
-                        }
-                    }
-                }
-            }
-
-            if (count($needs)) {
-                $need = implode(', ', $needs);
-                $query = "ALTER TABLE `{$this->tblSiteContent}` {$need}";
-                $this->evo->getDatabase()->query($query);
-            }
-
-            /**
              * Модификация таблицы переводов
              */
             $columns = [];
@@ -268,9 +231,10 @@ if (!class_exists('sLang')) {
                 $custom_fields = include MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php';
                 if (count($custom_fields)) {
                     foreach ($custom_fields as $key => $value) {
-                        $fName = explode('_', $key);
-                        array_pop($fName);
-                        $fName = implode('_', $fName);
+                        $fName = explode('[', $key);
+                        array_shift($fName);
+                        $fName = implode('', $fName);
+                        $fName = trim($fName, ']');
 
                         if (in_array($fName, $this->siteContentFields)) {
                             unset($custom_fields[$key]);
@@ -294,40 +258,40 @@ if (!class_exists('sLang')) {
                 }
 
                 foreach ($langConfig as &$lang) {
-                    $custom_fields['pagetitle_'.$lang] = [
+                    $custom_fields[$lang.'[pagetitle]'] = [
                         'title' => '$_lang[\'resource_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_title_help\']',
                         'default' => "",
-                        'save' => 'true'
+                        'save' => ""
                     ];
-                    $custom_fields['longtitle_'.$lang] = [
+                    $custom_fields[$lang.'[longtitle]'] = [
                         'title' => '$_lang[\'long_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_long_title_help\']',
                         'default' => "",
-                        'save' => 'true'
+                        'save' => ""
                     ];
-                    $custom_fields['description_'.$lang] = [
+                    $custom_fields[$lang.'[description]'] = [
                         'title' => '$_lang[\'resource_description\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_description_help\']',
                         'default' => "",
-                        'save' => 'true'
+                        'save' => ""
                     ];
-                    $custom_fields['introtext_'.$lang] = [
+                    $custom_fields[$lang.'[introtext]'] = [
                         'title' => '$_lang[\'resource_summary\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_summary_help\']',
                         'default' => "",
-                        'save' => 'true'
+                        'save' => ""
                     ];
-                    $custom_fields['content_'.$lang] = [
+                    $custom_fields[$lang.'[content]'] = [
                         'title' => '$_lang[\'resource_content\'].\' ('.strtoupper($lang).')\'',
                         'default' => "",
-                        'save' => 'true'
+                        'save' => ""
                     ];
-                    $custom_fields['menutitle_'.$lang] = [
+                    $custom_fields[$lang.'[menutitle]'] = [
                         'title' => '$_lang[\'resource_opt_menu_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_opt_menu_title_help\']',
                         'default' => "",
-                        'save' => 'true'
+                        'save' => ""
                     ];
                 }
 
@@ -360,6 +324,52 @@ if (!class_exists('sLang')) {
              * Очистка кеша
              */
             return $this->evo->clearCache('full');
+        }
+
+        /**
+         * Подготовка полей ресурса
+         * @param $content array
+         * @return array
+         */
+        public function prepareFields(array $content):array
+        {
+            $contentLang = [];
+
+            foreach ($this->langConfig() as $langConfig) {
+                foreach ($this->siteContentFields as $siteContentField) {
+                    $contentLang[$langConfig.'['.$siteContentField.']'] = '';
+                }
+            }
+
+            $translates = sLangContent::whereResource($content['id'])->get()->toArray();
+
+            if (is_array($translates) && count($translates)) {
+                foreach ($translates as $translate) {
+                    $currentLang = $translate['lang'];
+                    unset($translate['id'], $translate['resource'], $translate['lang'], $translate['created_at'], $translate['updated_at']);
+
+                    foreach ($translate as $key => $value) {
+                        if (is_null($value)) {
+                            $value = '';
+                        }
+                        $contentLang[$currentLang.'['.$key.']'] = $value;
+                    }
+                }
+            }
+
+            return array_merge($content, $contentLang);
+        }
+
+        /**
+         * Запись переводов ресурса
+         * @param int $resourceId
+         * @param string $langKey
+         * @param array $fields
+         * @return void
+         */
+        public function setLangContent(int $resourceId, string $langKey, array $fields):void
+        {
+            sLangContent::updateOrCreate(['resource' => $resourceId, 'lang' => $langKey], $fields);
         }
 
         /**

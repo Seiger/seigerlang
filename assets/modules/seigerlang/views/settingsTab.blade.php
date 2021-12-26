@@ -7,7 +7,7 @@
                 <select style="width:100%" name="s_lang_default" class="form-control select2" data-placeholder="{{$_lang['slang_select_lang']}}" data-validate="textNoEmpty">
                     <option value=""></option>
                     @foreach ($sLang->langList() as $id => $title)
-                        <option value="{{$id}}"@if ($id == $sLang->langDefault()) selected @endif()>{{$title['name']}}</option>
+                        <option value="{{$id}}"@if ($id == $sLang->langDefault()) selected @endif()>{{$title['name']}} ({{$_lang['slang_lang_'.$id]}})</option>
                     @endforeach()
                 </select>
                 <div class="error-text" style="display:none;">{{$_lang['slang_field']}} <b>"{{$_lang['slang_lang_def']}}"</b> {{$_lang['slang_do_not_empty']}}</div>
@@ -23,7 +23,7 @@
                 <select style="width:100%" name="s_lang_config[]" class="form-control select2" data-placeholder="{{$_lang['slang_select_lang']}}" multiple data-validate="textMustContainDefault">
                     <option value=""></option>
                     @foreach ($sLang->langList() as $id => $title)
-                        <option value="{{$id}}"@if (in_array($id, $sLang->langConfig())) selected @endif()>{{$title['name']}}</option>
+                        <option value="{{$id}}"@if (in_array($id, $sLang->langConfig())) selected @endif()>{{$title['name']}} ({{$_lang['slang_lang_'.$id]}})</option>
                     @endforeach()
                 </select>
                 <div class="error-text" style="display:none;">{{$_lang['slang_field']}} <b>"{{$_lang['slang_languages']}}"</b> {{$_lang['slang_do_not_empty']}} {{$_lang['slang_must_contain']}}</div>
@@ -35,7 +35,7 @@
                 <select style="width:100%" name="s_lang_front[]" class="form-control select2" data-placeholder="{{$_lang['slang_select_lang']}}" multiple data-validate="textMustContainSiteLang">
                     <option value=""></option>
                     @foreach ($sLang->langList() as $id => $title)
-                        <option value="{{$id}}"@if (in_array($id, $sLang->langFront())) selected @endif()>{{$title['name']}}</option>
+                        <option value="{{$id}}"@if (in_array($id, $sLang->langFront())) selected @endif()>{{$title['name']}} ({{$_lang['slang_lang_'.$id]}})</option>
                     @endforeach()
                 </select>
                 <div class="error-text" style="display:none;">{{$_lang['slang_field']}} <b>"{{$_lang['slang_lang_front']}}"</b> {{$_lang['slang_do_not_empty']}} {{$_lang['slang_must_contain_lang']}}</div>

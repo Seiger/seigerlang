@@ -7,34 +7,46 @@ use EvolutionCMS\Facades\UrlProcessor;
 
 $e = evolutionCMS()->event;
 
-if ($e->name == 'OnDocFormSave') {
-    if (!empty($e->params['id'])) {
-        $sLang  = new sLang();
-        $sLangDefault = $sLang->langDefault();
-        $data = [];
+if ($e->name == 'OnDocFormPrerender') {
+    global $content;
+    $sLang  = new sLang();
+    $content = $sLang->prepareFields($content);
+}
 
+if ($e->name == 'OnBeforeDocFormSave') {
+    if (empty($e->params['id'])) {
+        $id = collect(DB::select("
+            SELECT AUTO_INCREMENT 
+            FROM `information_schema`.`tables` 
+            WHERE `table_name` = '".evo()->getDatabase()->getFullTableName('site_content')."'"))
+            ->pluck('AUTO_INCREMENT')
+            ->first();
+        $e->params['id'] = $id;
+    }
+
+    $sLang  = new sLang();
+    $sLangDefault = $sLang->langDefault();
+    $data = [];
+
+    if (request()->has($sLangDefault)) {
         foreach ($sLang->siteContentFields as $siteContentField) {
-            if (isset($_REQUEST[$siteContentField])) {
-                $value = $_REQUEST[$siteContentField.'_'.$sLangDefault];
-                if (!is_null($value) && !empty($value)) {
-                    if (is_array($value)) {
-                        $value = implode('||', $value);
-                    }
-                    $data[$siteContentField] = evolutionCMS()->db->escape($value);
-                }
-            }
+            $_REQUEST[$siteContentField] = $_REQUEST[$sLangDefault][$siteContentField];
         }
+    }
 
-        if (isset($_REQUEST['alias']) && !trim($_REQUEST['alias'])) {
-            if (isset($_REQUEST['pagetitle_en']) && trim($_REQUEST['pagetitle_en'])) {
-                $data['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['pagetitle_en'])));
-            } else {
-                $data['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['pagetitle'])));
-            }
+    if (isset($_REQUEST['alias']) && !trim($_REQUEST['alias'])) {
+        if (isset($_REQUEST['en']['pagetitle']) && trim($_REQUEST['en']['pagetitle'])) {
+            $_REQUEST['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['en']['pagetitle'])));
+        } else {
+            $_REQUEST['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['pagetitle'])));
         }
+    }
 
-        if (!empty($data)) {
-            evolutionCMS()->db->update($data, '[+prefix+]site_content', 'id=' . $e->params['id']);
+    foreach ($sLang->langConfig() as $langConfig) {
+        if (request()->has($langConfig)) {
+            unset($_REQUEST[$langConfig]);
+
+            $sLang->setLangContent($e->params['id'], $langConfig, request($langConfig));
         }
     }
 }
