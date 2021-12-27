@@ -373,6 +373,18 @@ if (!class_exists('sLang')) {
         }
 
         /**
+         * Получение перевода ресурса
+         * @param int $resourceId
+         * @param string $langKey
+         * @return array
+         */
+        public function getLangContent(int $resourceId, string $langKey):array
+        {
+            $sLangContent = sLangContent::whereResource($resourceId)->whereLang($langKey)->first();
+            return $sLangContent ? $sLangContent->toArray() : [];
+        }
+
+        /**
          * Парсинг переводов в шаблонах Blade
          * @return bool
          */

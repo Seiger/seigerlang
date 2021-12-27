@@ -3,11 +3,11 @@
 --
 
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `tid` int(11) NOT NULL AUTO_INCREMENT,
     `key` varchar(128) COMMENT 'Translate Key',
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`tid`),
     KEY `idx_key` (`key`)
     ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1;
 

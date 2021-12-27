@@ -85,8 +85,12 @@ if ($e->name == 'OnAfterLoadDocumentObject') {
     $sLang  = new sLang();
     $lang = evolutionCMS()->getLocale();
 
-    foreach ($sLang->siteContentFields as $siteContentField) {
-        $e->params['documentObject'][$siteContentField] = $e->params['documentObject'][$siteContentField.'_'.$lang];
+    $langContentField = $sLang->getLangContent($e->params['documentObject']['id'], $lang);
+
+    if (count($langContentField)) {
+        foreach ($sLang->siteContentFields as $siteContentField) {
+            $e->params['documentObject'][$siteContentField] = $langContentField[$siteContentField];
+        }
     }
 
     evolutionCMS()->documentObject = $e->params['documentObject'];
