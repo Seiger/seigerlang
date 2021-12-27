@@ -76,9 +76,9 @@
         });
     </script>
     <style>
-        .langTable {margin-left: 20%; width: 80%;}
+        .langTable {margin-left: 16%; width: 84%;}
         .langTable table {width: {{count($sLang->langConfig())*25+35}}%;}
-        .langTable td:first-child {vertical-align: middle; position: fixed; width: 20%; margin-left: -20%;}
+        .langTable td:first-child {vertical-align: middle; position: fixed; width: 16%; margin-left: -16%;}
         .langTable tbody td:first-child {padding-top: 10px;}
     </style>
 @endpush

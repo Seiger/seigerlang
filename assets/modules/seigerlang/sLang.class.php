@@ -497,7 +497,7 @@ if (!class_exists('sLang')) {
             $data = array_merge($data, ['modx' => $this->evo, 'data' => $data, '_lang' => $_lang]);
 
             View::getFinder()->setPaths([
-                MODX_BASE_PATH.'assets/modules/seigerlang/views',
+                $this->basePath.'views',
                 MODX_MANAGER_PATH.'views'
             ]);
             echo View::make($tpl, $data);
