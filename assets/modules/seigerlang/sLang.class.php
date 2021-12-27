@@ -104,7 +104,7 @@ if (!class_exists('sLang')) {
          */
         public function dictionary()
         {
-            $translates = sLangTranslate::orderByDesc('id')->paginate(30);
+            $translates = sLangTranslate::orderByDesc('tid')->paginate(30);
             $translates->withPath($this->url);
 
             return $translates;
