@@ -15,12 +15,12 @@
                 <tr>
                     <td>{{$dictionary['key']}}</td>
                     @foreach($sLang->langConfig() as $langConfig)
-                        <td data-id="{{$dictionary['id']}}" data-lang="{{$langConfig}}">
+                        <td data-tid="{{$dictionary['tid']}}" data-lang="{{$langConfig}}">
                             @if($langConfig == $sLang->langDefault())
-                                <input type="text" class="form-control" name="sLang[{{$dictionary['id']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
+                                <input type="text" class="form-control" name="sLang[{{$dictionary['tid']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
                             @else
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="sLang[{{$dictionary['id']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
+                                    <input type="text" class="form-control" name="sLang[{{$dictionary['tid']}}][{{$langConfig}}]" value="{{$dictionary[$langConfig]}}" />
                                     <span class="input-group-btn">
                                         <button style="padding: 0 5px;" class="btn btn-light js_translate" type="button" title="{{$_lang['slang_auto_translate']}} {{strtoupper($sLang->langDefault())}} => {{strtoupper($langConfig)}}" title="{{$_lang['slang_auto_translate']}}">
                                             <i class="fa fa-language" style="font-size: xx-large;"></i>
@@ -49,7 +49,7 @@
     <script>
         $(document).on("click", ".js_translate", function () {
             var _this = $(this).parents('td');
-            var source = _this.data('id');
+            var source = _this.data('tid');
             var target = _this.data('lang');
 
             $.ajax({
@@ -64,7 +64,7 @@
 
         jQuery(".sectionTrans").on("blur", "input", function () {
             var _this = $(this).parents('td');
-            var source = _this.data('id');
+            var source = _this.data('tid');
             var target = _this.data('lang');
             var _value = _this.find('input').val();
 
