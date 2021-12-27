@@ -4,15 +4,22 @@
  */
 
 use EvolutionCMS\Facades\UrlProcessor;
+use EvolutionCMS\Models\SiteContent;
 
 $e = evolutionCMS()->event;
 
+/**
+ * Заполнение полей при открытии ресурса в админке
+ */
 if ($e->name == 'OnDocFormPrerender') {
     global $content;
     $sLang  = new sLang();
     $content = $sLang->prepareFields($content);
 }
 
+/**
+ * Модификация полей перед сохранением ресурса
+ */
 if ($e->name == 'OnBeforeDocFormSave') {
     if (empty($e->params['id'])) {
         $id = collect(DB::select("
@@ -25,22 +32,6 @@ if ($e->name == 'OnBeforeDocFormSave') {
     }
 
     $sLang  = new sLang();
-    $sLangDefault = $sLang->langDefault();
-    $data = [];
-
-    if (request()->has($sLangDefault)) {
-        foreach ($sLang->siteContentFields as $siteContentField) {
-            $_REQUEST[$siteContentField] = $_REQUEST[$sLangDefault][$siteContentField];
-        }
-    }
-
-    if (isset($_REQUEST['alias']) && !trim($_REQUEST['alias'])) {
-        if (isset($_REQUEST['en']['pagetitle']) && trim($_REQUEST['en']['pagetitle'])) {
-            $_REQUEST['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['en']['pagetitle'])));
-        } else {
-            $_REQUEST['alias'] = strtolower(evolutionCMS()->stripAlias(trim($_REQUEST['pagetitle'])));
-        }
-    }
 
     foreach ($sLang->langConfig() as $langConfig) {
         if (request()->has($langConfig)) {
@@ -51,8 +42,44 @@ if ($e->name == 'OnBeforeDocFormSave') {
     }
 }
 
+if ($e->name == 'OnDocFormSave') {
+    if (!empty($e->params['id'])) {
+        $sLang  = new sLang();
+        $sLangDefault = $sLang->langDefault();
+        $data = [];
+
+        if (request()->has($sLangDefault)) {
+            $data = request($sLangDefault);
+        }
+
+        if (request()->has('alias') && !trim(request('alias')) && request()->has('en')) {
+            $request = request('en');
+            $alias = strtolower(evolutionCMS()->stripAlias(trim($request['pagetitle'])));
+            if (SiteContent::withTrashed()
+                    ->where('id', '<>', $id)
+                    ->where('alias', $alias)->count() > 0) {
+                $cnt = 1;
+                $tempAlias = $alias;
+                while (SiteContent::withTrashed()
+                        ->where('id', '<>', $id)
+                        ->where('alias', $tempAlias)->count() > 0) {
+                    $tempAlias = $alias;
+                    $tempAlias .= $cnt;
+                    $cnt++;
+                }
+                $alias = $tempAlias;
+            }
+            $data['alias'] = $alias;
+        }
+
+        if (!empty($data)) {
+            evolutionCMS()->db->update($data, evolutionCMS()->getDatabase()->getFullTableName('site_content'), 'id=' . $e->params['id']);
+        }
+    }
+}
+
 /**
- * Подмена стандартных полей на мультиязычные
+ * Подмена стандартных полей на мультиязычные фронтенд
  */
 if ($e->name == 'OnAfterLoadDocumentObject') {
     $sLang  = new sLang();
