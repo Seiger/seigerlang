@@ -526,6 +526,9 @@ if (!class_exists('sLang')) {
          */
         protected function googleTranslate($text, $source = 'ru', $target = 'uk')
         {
+            if ($source == 'ind') {$source = 'id';}
+            if ($target == 'ind') {$target = 'id';}
+
             if ($source == $target) {
                 return $text;
             }
