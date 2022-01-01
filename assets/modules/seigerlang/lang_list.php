@@ -45,6 +45,6 @@ return [
     'fi' => ['name' => 'suomi',         'short' => 'suomi',     'ISO 639-1' => 'fi', 'ISO 639-3' => 'fin'],
     'km' => ['name' => 'ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ','short' => 'ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ',    'ISO 639-1' => 'km', 'ISO 639-3' => 'khm'],
     'ko' => ['name' => '한국어',         'short' => '한국어',     'ISO 639-1' => 'ko', 'ISO 639-3' => 'kor'],
-    'id' => ['name' => 'Bahasa Indonesia','short' => 'Bahasa',  'ISO 639-1' => 'id', 'ISO 639-3' => 'ind'],
+    'ind' => ['name' => 'Bahasa Indonesia','short' => 'Bahasa',  'ISO 639-1' => 'id', 'ISO 639-3' => 'ind'],
     'ms' => ['name' => 'Melayu',       'short' => 'Melayu',      'ISO 639-1' => 'ms', 'ISO 639-3' => 'msa'],
 ];

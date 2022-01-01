@@ -42,7 +42,7 @@
     <div id="actions">
         <div class="btn-group">
             <a href="{!!$url!!}&get=translates&action=synchronize" class="btn btn-success" title="{{$_lang["slang_synchronize_help"]}}">
-                <i class="fa fa-save"></i>&emsp;<span>{{$_lang["slang_synchronize"]}}</span>
+                <i class="fa fa-sync-alt"></i>&emsp;<span>{{$_lang["slang_synchronize"]}}</span>
             </a>
         </div>
     </div>
