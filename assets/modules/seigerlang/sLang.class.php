@@ -9,6 +9,7 @@ use EvolutionCMS\Models\SiteModule;
 use EvolutionCMS\Models\SystemSetting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 use sLang\Models\sLangContent;
 use sLang\Models\sLangTranslate;
 
@@ -415,10 +416,13 @@ if (!class_exists('sLang')) {
             $needs = array_diff($list, $sLangs);
             if (count($needs)) {
                 foreach ($needs as &$need) {
-                    $sLangTranslate = new sLangTranslate();
-                    $sLangTranslate->key = $need;
-                    $sLangTranslate->{$langDefault} = $need;
-                    $sLangTranslate->save();
+                    $key = Str::limit($need, 125, '...');
+                    if (!in_array($key, $sLangs)) {
+                        $sLangTranslate = new sLangTranslate();
+                        $sLangTranslate->key = $key;
+                        $sLangTranslate->{$langDefault} = $need;
+                        $sLangTranslate->save();
+                    }
                 }
             }
 

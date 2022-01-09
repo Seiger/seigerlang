@@ -74,11 +74,18 @@
                 data: 'source=' + source + '&target=' + target + '&value=' + _value,
             });
         });
+
+        $('.langTable tbody td:first-child').each(function () {
+            hgs = Math.ceil($(this).outerHeight());
+            if (hgs > 70) {
+                $(this).parent().attr('style', 'height: '+(hgs/2-10)+'px;');
+            }
+        });
     </script>
     <style>
         .langTable {margin-left: 16%; width: 84%;}
         .langTable table {width: {{count($sLang->langConfig())*25+35}}%;}
-        .langTable td:first-child {vertical-align: middle; position: fixed; width: 16%; margin-left: -16%;}
+        .langTable td:first-child {vertical-align: middle; position: absolute; width: 16%; margin-left: -16%;}
         .langTable tbody td:first-child {padding-top: 10px;}
     </style>
 @endpush
