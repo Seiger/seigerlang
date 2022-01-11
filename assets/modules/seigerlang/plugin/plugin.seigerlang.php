@@ -132,8 +132,10 @@ if ($e->name == 'OnWebPageInit' || $e->name == 'OnPageNotFound') {
     } else {
         $q = trim($_SERVER['REQUEST_URI'], '/');
         $hash = '_'.md5(serialize($q));
-        if (array_key_exists($q, UrlProcessor::getFacadeRoot()->documentListing)) {
-            $identifier = UrlProcessor::getFacadeRoot()->documentListing[$q];
+        $path = explode('?', $q);
+        $path = trim($path[0], '/');
+        if (array_key_exists($path, UrlProcessor::getFacadeRoot()->documentListing)) {
+            $identifier = UrlProcessor::getFacadeRoot()->documentListing[$path];
         }
     }
     evolutionCMS()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
