@@ -99,14 +99,14 @@ if ($e->name == 'OnAfterLoadDocumentObject') {
 /**
  * Параметризация текущего языка
  */
-if ($e->name == 'OnWebPageInit' || $e->name == 'OnPageNotFound') {
+if ($e->name == 'OnWebPageInit') {
     $hash = '';
-    $identifier = evolutionCMS()->config['error_page'];
-    $sLangDefault = evolutionCMS()->config['s_lang_default'];
+    $identifier = evolutionCMS()->getConfig('error_page', 1);
+    $sLangDefault = evolutionCMS()->getConfig('s_lang_default', 'uk');
 
     if (isset($_SERVER['REQUEST_URI'])) {
         $url = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'), 2);
-        $sLangFront = explode(',', evolutionCMS()->config['s_lang_front']);
+        $sLangFront = explode(',', evolutionCMS()->getConfig('s_lang_front', 'uk'));
 
         if (trim($url[0])) {
             if ($url[0] == $sLangDefault && evolutionCMS()->config['s_lang_default_show'] != 1) {
@@ -138,7 +138,12 @@ if ($e->name == 'OnWebPageInit' || $e->name == 'OnPageNotFound') {
             $identifier = UrlProcessor::getFacadeRoot()->documentListing[$path];
         }
     }
-    evolutionCMS()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
 
-    evolutionCMS()->sendForward($identifier);die;
+    if ($identifier == evolutionCMS()->getConfig('error_page', 1)) {
+        evolutionCMS()->invokeEvent('OnPageNotFound');
+    }
+
+    evolutionCMS()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
+    evolutionCMS()->sendForward($identifier);
+    exit();
 }
