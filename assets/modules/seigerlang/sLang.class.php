@@ -19,6 +19,7 @@ if (!class_exists('sLang')) {
         public $evo;
         public $siteContentFields = ['pagetitle', 'longtitle', 'description', 'introtext', 'content', 'menutitle'];
         public $url;
+        public $baseUrl = MODX_BASE_URL . 'assets/modules/seigerlang/';
         protected $doc;
         protected $params;
         protected $basePath = MODX_BASE_PATH . 'assets/modules/seigerlang/';
@@ -38,6 +39,29 @@ if (!class_exists('sLang')) {
             $this->tblLang = $this->evo->getDatabase()->getFullTableName($this->tblLang);
 
             Paginator::defaultView('pagination');
+        }
+
+        /**
+         * Список альтернативных языков сайта
+         *
+         * @return string
+         */
+        public function hrefLangs():string
+        {
+            if (evolutionCMS()->getConfig('s_lang_default_show', 0) == 1) {
+                $hrefLangs = '<link rel="alternate" href="'.MODX_SITE_URL.$this->langDefault().'/" hreflang="x-default" />';
+            } else {
+                $hrefLangs = '<link rel="alternate" href="'.MODX_SITE_URL.'" hreflang="x-default" />';
+            }
+
+            foreach ($this->langFront() as $item) {
+                if ($item == $this->langDefault() && evolutionCMS()->getConfig('s_lang_default_show', 0) != 1) {
+                    $hrefLangs .= '<link rel="alternate" href="'.MODX_SITE_URL.'" hreflang="'.$item.'" />';
+                } else {
+                    $hrefLangs .= '<link rel="alternate" href="'.MODX_SITE_URL.$item.'/" hreflang="'.$item.'" />';
+                }
+            }
+            return $hrefLangs;
         }
 
         /**
@@ -105,7 +129,7 @@ if (!class_exists('sLang')) {
          */
         public function dictionary()
         {
-            $translates = sLangTranslate::orderByDesc('tid')->paginate(30);
+            $translates = sLangTranslate::orderByDesc('tid')->paginate(17);
             $translates->withPath($this->url);
 
             return $translates;
@@ -521,7 +545,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Получение переводов от Google
+         * Получение переводов Google
          *
          * @param $text
          * @param string $source

@@ -42,14 +42,17 @@ if ($e->name == 'OnBeforeDocFormSave') {
     }
 }
 
+/**
+ * Генерация алиаса
+ */
 if ($e->name == 'OnDocFormSave') {
-    if (!empty($e->params['id'])) {
+    if (isset($e->params['id']) && !empty($e->params['id'])) {
         $sLang  = new sLang();
         $sLangDefault = $sLang->langDefault();
         $data = [];
 
         if (request()->has($sLangDefault)) {
-            $data = request($sLangDefault);
+            $data = evolutionCMS()->db->escape(request($sLangDefault));
         }
 
         if (request()->has('alias') && !trim(request('alias')) && request()->has('en')) {
@@ -110,7 +113,8 @@ if ($e->name == 'OnWebPageInit') {
 
         if (trim($url[0])) {
             if ($url[0] == $sLangDefault && evolutionCMS()->config['s_lang_default_show'] != 1) {
-                evolutionCMS()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));die;
+                evolutionCMS()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));
+                die;
             }
 
             if (in_array($url[0], $sLangFront)) {
@@ -139,11 +143,17 @@ if ($e->name == 'OnWebPageInit') {
         }
     }
 
+    evolutionCMS()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
+
     if ($identifier == evolutionCMS()->getConfig('error_page', 1)) {
         evolutionCMS()->invokeEvent('OnPageNotFound');
     }
 
-    evolutionCMS()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
     evolutionCMS()->sendForward($identifier);
     exit();
+}
+
+if ($e->name == 'OnDocFormRender') {
+    $sLang  = new sLang();
+    evolutionCMS()->regClientScript($sLang->baseUrl.'scripts/wisywingEditor.js');
 }
