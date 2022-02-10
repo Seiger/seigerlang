@@ -423,7 +423,7 @@ if (!class_exists('sLang')) {
                 if (is_array($views) && count($views)) {
                     foreach ($views as $view) {
                         $data = file_get_contents($view);
-                        preg_match_all('/@lang\(\'.*\'\)/', $data, $match);
+                        preg_match_all("/@lang\('\K.+?(?='\))/", $data, $match);
 
                         if (is_array($match) && is_array($match[0]) && count($match[0])) {
                             foreach ($match[0] as $item) {
