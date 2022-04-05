@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`tid`),
     KEY `idx_key` (`key`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1;
+    ) ENGINE=MyISAM {TABLEENCODING} AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_content` (
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `resource_lang` (`resource`,`lang`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET={TABLEENCODING} AUTO_INCREMENT=1;
+    ) ENGINE=MyISAM  {TABLEENCODING} AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
