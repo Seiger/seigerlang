@@ -7,7 +7,7 @@
  * @category    plugin
  * @version 1.1
  * @author  Seiger
- * @internal    @events OnWebPageInit,OnAfterLoadDocumentObject,OnDocFormPrerender,OnBeforeDocFormSave,OnDocFormSave
+ * @internal    @events OnWebPageInit,OnAfterLoadDocumentObject,OnDocFormPrerender,OnBeforeDocFormSave,OnDocFormSave,OnDocFormRender
  * @internal    @installset base, sample
  */
 
