@@ -6,7 +6,7 @@
 use EvolutionCMS\Facades\UrlProcessor;
 use EvolutionCMS\Models\SiteContent;
 
-$e = evolutionCMS()->event;
+$e = evo()->event;
 
 /**
  * Заполнение полей при открытии ресурса в админке
@@ -34,10 +34,17 @@ if ($e->name == 'OnBeforeDocFormSave') {
     $sLang  = new sLang();
 
     foreach ($sLang->langConfig() as $langConfig) {
-        if (request()->has($langConfig)) {
-            unset($_REQUEST[$langConfig]);
+        $fields = [];
+        foreach (request()->all() as $key => $value) {
+            if (str_starts_with($key, $langConfig.'_')) {
+                $keyName = str_replace($langConfig.'_', '', $key);
+                $fields[$keyName] = $value;
+                unset($_REQUEST[$key]);
+            }
+        }
 
-            $sLang->setLangContent($e->params['id'], $langConfig, request($langConfig));
+        if (count($fields)) {
+            $sLang->setLangContent($e->params['id'], $langConfig, $fields);
         }
     }
 }

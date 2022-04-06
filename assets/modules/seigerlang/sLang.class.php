@@ -17,7 +17,7 @@ if (!class_exists('sLang')) {
     class sLang
     {
         public $evo;
-        public $siteContentFields = ['pagetitle', 'longtitle', 'description', 'introtext', 'content', 'menutitle'];
+        public $siteContentFields = ['pagetitle', 'longtitle', 'description', 'introtext', 'content', 'menutitle', 'seotitle', 'seodescription'];
         public $url;
         public $baseUrl = MODX_BASE_URL . 'assets/modules/seigerlang/';
         protected $doc;
@@ -30,7 +30,7 @@ if (!class_exists('sLang')) {
         public function __construct($doc = [])
         {
             $this->doc = $doc;
-            $this->evo = evolutionCMS();
+            $this->evo = evo();
             $this->params = $this->evo->event->params;
             $this->url = $this->moduleUrl();
 
@@ -48,14 +48,14 @@ if (!class_exists('sLang')) {
          */
         public function hrefLangs():string
         {
-            if (evolutionCMS()->getConfig('s_lang_default_show', 0) == 1) {
+            if (evo()->getConfig('s_lang_default_show', 0) == 1) {
                 $hrefLangs = '<link rel="alternate" href="'.MODX_SITE_URL.$this->langDefault().'/" hreflang="x-default" />';
             } else {
                 $hrefLangs = '<link rel="alternate" href="'.MODX_SITE_URL.'" hreflang="x-default" />';
             }
 
             foreach ($this->langFront() as $item) {
-                if ($item == $this->langDefault() && evolutionCMS()->getConfig('s_lang_default_show', 0) != 1) {
+                if ($item == $this->langDefault() && evo()->getConfig('s_lang_default_show', 0) != 1) {
                     $hrefLangs .= '<link rel="alternate" href="'.MODX_SITE_URL.'" hreflang="'.$item.'" />';
                 } else {
                     $hrefLangs .= '<link rel="alternate" href="'.MODX_SITE_URL.$item.'/" hreflang="'.$item.'" />';
@@ -85,11 +85,7 @@ if (!class_exists('sLang')) {
          */
         public function langDefault():string
         {
-            $langDefault = $this->evo->config['manager_language'];
-            if (trim($this->evo->config['s_lang_default'])) {
-                $langDefault = $this->evo->getConfig("s_lang_default");
-            }
-            return $langDefault;
+            return $this->evo->getConfig("s_lang_default", 'uk');
         }
 
         /**
@@ -283,38 +279,48 @@ if (!class_exists('sLang')) {
                 }
 
                 foreach ($langConfig as &$lang) {
-                    $custom_fields[$lang.'[pagetitle]'] = [
+                    $custom_fields[$lang.'_pagetitle'] = [
                         'title' => '$_lang[\'resource_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_title_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'[longtitle]'] = [
+                    $custom_fields[$lang.'_longtitle'] = [
                         'title' => '$_lang[\'long_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_long_title_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'[description]'] = [
+                    $custom_fields[$lang.'_description'] = [
                         'title' => '$_lang[\'resource_description\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_description_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'[introtext]'] = [
+                    $custom_fields[$lang.'_introtext'] = [
                         'title' => '$_lang[\'resource_summary\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_summary_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'[content]'] = [
+                    $custom_fields[$lang.'_content'] = [
                         'title' => '$_lang[\'resource_content\'].\' ('.strtoupper($lang).')\'',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'[menutitle]'] = [
+                    $custom_fields[$lang.'_menutitle'] = [
                         'title' => '$_lang[\'resource_opt_menu_title\'].\' ('.strtoupper($lang).')\'',
                         'help' => '$_lang[\'resource_opt_menu_title_help\']',
+                        'default' => "",
+                        'save' => ""
+                    ];
+                    $custom_fields[$lang.'_seotitle'] = [
+                        'title' => '$_lang[\'resource_title\'].\' SEO ('.strtoupper($lang).')\'',
+                        'default' => "",
+                        'save' => ""
+                    ];
+                    $custom_fields[$lang.'_seodescription'] = [
+                        'title' => '$_lang[\'resource_description\'].\' SEO ('.strtoupper($lang).')\'',
                         'default' => "",
                         'save' => ""
                     ];
@@ -362,7 +368,7 @@ if (!class_exists('sLang')) {
 
             foreach ($this->langConfig() as $langConfig) {
                 foreach ($this->siteContentFields as $siteContentField) {
-                    $contentLang[$langConfig.'['.$siteContentField.']'] = '';
+                    $contentLang[$langConfig.'_'.$siteContentField] = '';
                 }
             }
 
@@ -377,7 +383,7 @@ if (!class_exists('sLang')) {
                         if (is_null($value)) {
                             $value = '';
                         }
-                        $contentLang[$currentLang.'['.$key.']'] = $value;
+                        $contentLang[$currentLang.'_'.$key] = $value;
                     }
                 }
             }

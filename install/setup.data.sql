@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_content` (
     `introtext` text COMMENT 'Translate introtext',
     `content` longtext COMMENT 'Translate content',
     `menutitle` varchar(255) DEFAULT '' COMMENT 'Translate menutitle',
+    `seotitle` varchar(128) DEFAULT '' COMMENT 'SEO title document',
+    `seodescription` varchar(255) DEFAULT '' COMMENT 'SEO description document',
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
