@@ -222,11 +222,11 @@ if (!class_exists('sLang')) {
             if ($query) {
                 $fields = $this->evo->getDatabase()->makeArray($query);
 
-                foreach ($fields as &$field) {
+                foreach ($fields as $field) {
                     $columns[$field['Field']] = $field;
                 }
 
-                foreach ($langConfig as &$lang) {
+                foreach ($langConfig as $lang) {
                     if (!isset($columns[$lang])) {
                         $needs[] = "ADD `{$lang}` text COMMENT '" . strtoupper($lang) . " sLang version'";
                     }
@@ -378,10 +378,9 @@ if (!class_exists('sLang')) {
                 $custom_fields = include MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.php';
                 if (count($custom_fields)) {
                     foreach ($custom_fields as $key => $value) {
-                        $fName = explode('[', $key);
+                        $fName = explode('_', $key);
                         array_shift($fName);
                         $fName = implode('', $fName);
-                        $fName = trim($fName, ']');
 
                         if (in_array($fName, $this->siteContentFields)) {
                             unset($custom_fields[$key]);
