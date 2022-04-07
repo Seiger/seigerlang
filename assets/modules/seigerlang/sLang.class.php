@@ -42,58 +42,58 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Список альтернативных языков сайта
+         * List of alternative site languages
          *
          * @return string
          */
-        public function hrefLangs():string
+        public function hrefLangs(): string
         {
             if (evo()->getConfig('s_lang_default_show', 0) == 1) {
-                $hrefLangs = '<link rel="alternate" href="'.MODX_SITE_URL.$this->langDefault().'/" hreflang="x-default" />';
+                $hrefLangs = '<link rel="alternate" href="' . MODX_SITE_URL . $this->langDefault() . '/" hreflang="x-default" />';
             } else {
-                $hrefLangs = '<link rel="alternate" href="'.MODX_SITE_URL.'" hreflang="x-default" />';
+                $hrefLangs = '<link rel="alternate" href="' . MODX_SITE_URL . '" hreflang="x-default" />';
             }
 
             foreach ($this->langFront() as $item) {
                 if ($item == $this->langDefault() && evo()->getConfig('s_lang_default_show', 0) != 1) {
-                    $hrefLangs .= '<link rel="alternate" href="'.MODX_SITE_URL.'" hreflang="'.$item.'" />';
+                    $hrefLangs .= '<link rel="alternate" href="' . MODX_SITE_URL . '" hreflang="' . $item . '" />';
                 } else {
-                    $hrefLangs .= '<link rel="alternate" href="'.MODX_SITE_URL.$item.'/" hreflang="'.$item.'" />';
+                    $hrefLangs .= '<link rel="alternate" href="' . MODX_SITE_URL . $item . '/" hreflang="' . $item . '" />';
                 }
             }
             return $hrefLangs;
         }
 
         /**
-         * Список языков
+         * List of languages
          *
          * @return array
          */
-        public function langList():array
+        public function langList(): array
         {
             $langList = [];
-            if (is_file($this->basePath.'lang_list.php')) {
-                $langList = require $this->basePath.'lang_list.php';
+            if (is_file($this->basePath . 'lang_list.php')) {
+                $langList = require $this->basePath . 'lang_list.php';
             }
             return $langList;
         }
 
         /**
-         * Язык по умолчанию
+         * Default language
          *
          * @return string
          */
-        public function langDefault():string
+        public function langDefault(): string
         {
             return $this->evo->getConfig("s_lang_default", 'uk');
         }
 
         /**
-         * Список языков сайта
+         * List of site languages
          *
          * @return array
          */
-        public function langConfig():array
+        public function langConfig(): array
         {
             $langConfig = [$this->evo->config['manager_language']];
             $sLangConfig = $this->getConfigValue('s_lang_config');
@@ -104,11 +104,11 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Список языков фронтенда
+         * List of frontend languages
          *
          * @return array
          */
-        public function langFront():array
+        public function langFront(): array
         {
             $langFront = [$this->evo->config['manager_language']];
             $sLangFront = $this->getConfigValue('s_lang_front');
@@ -119,7 +119,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Список переводов БД
+         * List of DB translations
          *
          * @return array
          */
@@ -132,7 +132,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Установить язык по умолчанию
+         * Set default language
          *
          * @param $value string
          * @return mixed
@@ -149,7 +149,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Установить видимость языка по умолчанию
+         * Set default language visibility
          *
          * @param $value string
          * @return mixed
@@ -162,7 +162,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Установить список языков сайта
+         * Set site language list
          *
          * @param $value array
          * @return mixed
@@ -173,7 +173,7 @@ if (!class_exists('sLang')) {
             $langConfig = $this->langConfig();
 
             if (is_array($value)) {
-                $langConfig = array_filter($value, function ($var) use($langList) {
+                $langConfig = array_filter($value, function ($var) use ($langList) {
                     return in_array($var, $langList) ? true : false;
                 });
             }
@@ -184,7 +184,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Установить список языков для фронтенд
+         * Set list of languages for frontend
          *
          * @param $value array
          * @return mixed
@@ -195,7 +195,7 @@ if (!class_exists('sLang')) {
             $langFront = $this->langFront();
 
             if (is_array($value)) {
-                $langFront = array_filter($value, function ($var) use($langConfig) {
+                $langFront = array_filter($value, function ($var) use ($langConfig) {
                     return in_array($var, $langConfig) ? true : false;
                 });
             }
@@ -206,14 +206,14 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Модификация полей таблиц
+         * Modifying table fields
          */
         public function setModifyTables()
         {
             $langConfig = $this->langConfig();
 
             /**
-             * Модификация таблицы переводов
+             * Translation table modification
              */
             $columns = [];
             $needs = [];
@@ -228,7 +228,7 @@ if (!class_exists('sLang')) {
 
                 foreach ($langConfig as &$lang) {
                     if (!isset($columns[$lang])) {
-                        $needs[] = "ADD `{$lang}` text COMMENT '".strtoupper($lang)." sLang version'";
+                        $needs[] = "ADD `{$lang}` text COMMENT '" . strtoupper($lang) . " sLang version'";
                     }
                 }
             }
@@ -240,16 +240,142 @@ if (!class_exists('sLang')) {
             }
 
             /**
-             * Настройка табов админки
+             * Setting up admin tabs
              */
-            if (is_file(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.example.php')
-                && !is_file(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php')) {
-                copy(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.example.php',
-                    MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php');
+            $tabs = [];
+
+            foreach ($langConfig as $lang) {
+                $tabs['General' . $lang] = [
+                    'title' => 'Tab ' . strtoupper($lang),
+                    'col:0:12' => [
+                        'fields:0' => [
+                            $lang . '_pagetitle' => [],
+                            $lang . '_longtitle' => [],
+                            $lang . '_description' => [
+                                'type' => 'textareamini'
+                            ],
+                            $lang . '_introtext' => [
+                                'type' => 'textarea'
+                            ],
+                            $lang . '_content' => [
+                                'type' => 'richtext'
+                            ],
+                            $lang . '_menutitle' => [],
+                            $lang . '_seotitle' => [],
+                            $lang . '_seodescription' => []
+                        ]
+                    ]
+                ];
             }
-            if (is_file(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php')) {
+
+            $tabs['Settings'] = [
+                'title' => '$_lang[\'settings_page_settings\']',
+                'col:0:6' => [
+                    'fields:0' => [
+                        'template' => [],
+                        'parent' => [],
+                        'published' => [],
+                        'hidemenu' => [],
+                        'alias_visible' => [],
+                        'searchable' => [],
+                        'cacheable' => [],
+                        'syncsite' => [],
+                        'isfolder' => [],
+                        'richtext' => []
+                    ]
+                ],
+                'col:1:6' => [
+                    'fields:0' => [
+                        'alias' => [],
+                        'link_attributes' => [],
+                        'menuindex' => [],
+                        'type' => [],
+                        'contentType' => [],
+                        'content_dispo' => [],
+                        'createdon' => [],
+                        'editedon' => [],
+                        'pub_date' => [],
+                        'unpub_date' => []
+                    ]
+                ]
+            ];
+
+            $tabs['#Static'] = [
+                'title' => 'Static',
+                'col:0:12' => []
+            ];
+
+            $f = fopen(MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/template__default.php', "w");
+            fwrite($f, '<?php global $_lang; ' . "\r\n" . 'return [' . "\r\n");
+            foreach ($tabs as $key => $item) {
+                fwrite($f, "\t'" . $key . "' => [\r\n");
+                foreach ($item as $name => $value) {
+                    if (is_array($value)) {
+                        if (count($value)) {
+                            fwrite($f, "\t\t'" . $name . "' => [" . "\r\n");
+                            foreach ($value as $kkk => $vvv) {
+                                if (is_array($vvv)) {
+                                    if (count($vvv)) {
+                                        fwrite($f, "\t\t\t'" . $kkk . "' => [" . "\r\n");
+                                        foreach ($vvv as $kk => $vv) {
+                                            if (is_array($vv)) {
+                                                if (count($vv)) {
+                                                    fwrite($f, "\t\t\t\t'" . $kk . "' => [" . "\r\n");
+                                                    foreach ($vv as $k => $v) {
+                                                        if (mb_substr($v, 0, 1) != '$' && !is_numeric($v) && !is_bool($v)) {
+                                                            $v = "'" . $v . "'";
+                                                        }
+                                                        fwrite($f, "\t\t\t\t\t'" . $k . "' => " . $v . ",\r\n");
+                                                    }
+                                                    fwrite($f, "\t\t\t\t" . "]" . ",\r\n");
+                                                } else {
+                                                    fwrite($f, "\t\t\t\t'" . $kk . "' => []" . ",\r\n");
+                                                }
+                                            } else {
+                                                if (mb_substr($vv, 0, 1) != '$' && !is_numeric($vv) && !is_bool($vv)) {
+                                                    $vv = "'" . $vv . "'";
+                                                }
+                                                fwrite($f, "\t\t\t\t'" . $kk . "' => " . $vv . ",\r\n");
+                                            }
+                                        }
+                                        fwrite($f, "\t\t\t" . "]" . ",\r\n");
+                                    } else {
+                                        fwrite($f, "\t\t\t'" . $kkk . "' => []" . ",\r\n");
+                                    }
+                                } else {
+                                    if (mb_substr($vvv, 0, 1) != '$' && !is_numeric($vvv) && !is_bool($vvv)) {
+                                        $vvv = "'" . $vvv . "'";
+                                    }
+                                    fwrite($f, "\t\t\t'" . $kkk . "' => " . $vvv . ",\r\n");
+                                }
+                            }
+                            fwrite($f, "\t\t" . "]" . ",\r\n");
+                        } else {
+                            fwrite($f, "\t\t'" . $name . "' => []" . ",\r\n");
+                        }
+                    } else {
+                        if (mb_substr($value, 0, 1) != '$' && !is_numeric($value) && !is_bool($value)) {
+                            $value = "'" . $value . "'";
+                        }
+                        fwrite($f, "\t\t'" . $name . "' => " . $value . ",\r\n");
+                    }
+                }
+                fwrite($f, "\t],\r\n");
+            }
+            fwrite($f, "];");
+            fclose($f);
+
+            /**
+             * Setting the language fields of the template
+             */
+            if (is_file(MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.example.php')
+                && !is_file(MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.php')) {
+                copy(MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.example.php',
+                    MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.php');
+            }
+            if (is_file(MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.php')) {
                 $custom_fields = [];
-                $custom_fields = include MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php';
+                $custom_fields = include MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.php';
                 if (count($custom_fields)) {
                     foreach ($custom_fields as $key => $value) {
                         $fName = explode('[', $key);
@@ -268,73 +394,73 @@ if (!class_exists('sLang')) {
                     $custom_fields['createdon'] = [
                         'default' => '$modx->toDateFormat(time())',
                         'save' => 'true',
-                        'prepareSave' => 'function ($data, $modx) {'."\r\n".
-                            "\t\t\t".'if (!empty($data)) {'."\r\n".
-                            "\t\t\t\t".'return $modx->toTimeStamp($data);'."\r\n".
-                            "\t\t\t".'} else {'."\r\n".
-                            "\t\t\t\t".'return time();'."\r\n".
-                            "\t\t\t".'}'."\r\n".
-                            "\t\t".'}'
+                        'prepareSave' => 'function ($data, $modx) {' . "\r\n" .
+                            "\t\t\t" . 'if (!empty($data)) {' . "\r\n" .
+                            "\t\t\t\t" . 'return $modx->toTimeStamp($data);' . "\r\n" .
+                            "\t\t\t" . '} else {' . "\r\n" .
+                            "\t\t\t\t" . 'return time();' . "\r\n" .
+                            "\t\t\t" . '}' . "\r\n" .
+                            "\t\t" . '}'
                     ];
                 }
 
-                foreach ($langConfig as &$lang) {
-                    $custom_fields[$lang.'_pagetitle'] = [
-                        'title' => '$_lang[\'resource_title\'].\' ('.strtoupper($lang).')\'',
+                foreach ($langConfig as $lang) {
+                    $custom_fields[$lang . '_pagetitle'] = [
+                        'title' => '$_lang[\'resource_title\'].\' (' . strtoupper($lang) . ')\'',
                         'help' => '$_lang[\'resource_title_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'_longtitle'] = [
-                        'title' => '$_lang[\'long_title\'].\' ('.strtoupper($lang).')\'',
+                    $custom_fields[$lang . '_longtitle'] = [
+                        'title' => '$_lang[\'long_title\'].\' (' . strtoupper($lang) . ')\'',
                         'help' => '$_lang[\'resource_long_title_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'_description'] = [
-                        'title' => '$_lang[\'resource_description\'].\' ('.strtoupper($lang).')\'',
+                    $custom_fields[$lang . '_description'] = [
+                        'title' => '$_lang[\'resource_description\'].\' (' . strtoupper($lang) . ')\'',
                         'help' => '$_lang[\'resource_description_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'_introtext'] = [
-                        'title' => '$_lang[\'resource_summary\'].\' ('.strtoupper($lang).')\'',
+                    $custom_fields[$lang . '_introtext'] = [
+                        'title' => '$_lang[\'resource_summary\'].\' (' . strtoupper($lang) . ')\'',
                         'help' => '$_lang[\'resource_summary_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'_content'] = [
-                        'title' => '$_lang[\'resource_content\'].\' ('.strtoupper($lang).')\'',
+                    $custom_fields[$lang . '_content'] = [
+                        'title' => '$_lang[\'resource_content\'].\' (' . strtoupper($lang) . ')\'',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'_menutitle'] = [
-                        'title' => '$_lang[\'resource_opt_menu_title\'].\' ('.strtoupper($lang).')\'',
+                    $custom_fields[$lang . '_menutitle'] = [
+                        'title' => '$_lang[\'resource_opt_menu_title\'].\' (' . strtoupper($lang) . ')\'',
                         'help' => '$_lang[\'resource_opt_menu_title_help\']',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'_seotitle'] = [
-                        'title' => '$_lang[\'resource_title\'].\' SEO ('.strtoupper($lang).')\'',
+                    $custom_fields[$lang . '_seotitle'] = [
+                        'title' => '$_lang[\'resource_title\'].\' SEO (' . strtoupper($lang) . ')\'',
                         'default' => "",
                         'save' => ""
                     ];
-                    $custom_fields[$lang.'_seodescription'] = [
-                        'title' => '$_lang[\'resource_description\'].\' SEO ('.strtoupper($lang).')\'',
+                    $custom_fields[$lang . '_seodescription'] = [
+                        'title' => '$_lang[\'resource_description\'].\' SEO (' . strtoupper($lang) . ')\'',
                         'default' => "",
                         'save' => ""
                     ];
                 }
 
-                $f = fopen(MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php', "w");
-                fwrite($f, '<?php global $_lang, $modx; '."\r\n".'return ['."\r\n");
+                $f = fopen(MODX_BASE_PATH . 'assets/plugins/templatesedit/configs/custom_fields.php', "w");
+                fwrite($f, '<?php global $_lang, $modx; ' . "\r\n" . 'return [' . "\r\n");
                 foreach ($custom_fields as $key => $item) {
-                    fwrite($f, "\t'".$key."' => [\r\n");
+                    fwrite($f, "\t'" . $key . "' => [\r\n");
                     foreach ($item as $name => $value) {
                         if (mb_substr($value, 0, 1) != '$' && !is_numeric($value) && !is_bool($value)) {
-                            $value = "'".$value."'";
+                            $value = "'" . $value . "'";
                         }
-                        fwrite($f, "\t\t'".$name."' => ".$value.",\r\n");
+                        fwrite($f, "\t\t'" . $name . "' => " . $value . ",\r\n");
                     }
                     fwrite($f, "\t],\r\n");
                 }
@@ -343,32 +469,33 @@ if (!class_exists('sLang')) {
             }
 
             /**
-             * Конфигурация файлов переводов
+             * Translation files configuration
              */
-            foreach ($langConfig as &$lang) {
-                if (!is_file(MODX_BASE_PATH.'core/lang/'.$lang.'.json')) {
-                    file_put_contents(MODX_BASE_PATH.'core/lang/'.$lang.'.json', '{}');
+            foreach ($langConfig as $lang) {
+                if (!is_file(MODX_BASE_PATH . 'core/lang/' . $lang . '.json')) {
+                    file_put_contents(MODX_BASE_PATH . 'core/lang/' . $lang . '.json', '{}');
                 }
             }
 
             /**
-             * Очистка кеша
+             * Clearing the cache
              */
             return $this->evo->clearCache('full');
         }
 
         /**
-         * Подготовка полей ресурса
+         * Preparing Resource Fields
+         *
          * @param $content array
          * @return array
          */
-        public function prepareFields(array $content):array
+        public function prepareFields(array $content): array
         {
             $contentLang = [];
 
             foreach ($this->langConfig() as $langConfig) {
                 foreach ($this->siteContentFields as $siteContentField) {
-                    $contentLang[$langConfig.'_'.$siteContentField] = '';
+                    $contentLang[$langConfig . '_' . $siteContentField] = '';
                 }
             }
 
@@ -383,7 +510,7 @@ if (!class_exists('sLang')) {
                         if (is_null($value)) {
                             $value = '';
                         }
-                        $contentLang[$currentLang.'_'.$key] = $value;
+                        $contentLang[$currentLang . '_' . $key] = $value;
                     }
                 }
             }
@@ -392,39 +519,42 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Запись переводов ресурса
+         * Recording resource translations
+         *
          * @param int $resourceId
          * @param string $langKey
          * @param array $fields
          * @return void
          */
-        public function setLangContent(int $resourceId, string $langKey, array $fields):void
+        public function setLangContent(int $resourceId, string $langKey, array $fields): void
         {
             sLangContent::updateOrCreate(['resource' => $resourceId, 'lang' => $langKey], $fields);
         }
 
         /**
-         * Получение перевода ресурса
+         * Getting a translation of a resource
+         *
          * @param int $resourceId
          * @param string $langKey
          * @return array
          */
-        public function getLangContent(int $resourceId, string $langKey):array
+        public function getLangContent(int $resourceId, string $langKey): array
         {
             $sLangContent = sLangContent::whereResource($resourceId)->whereLang($langKey)->first();
             return $sLangContent ? $sLangContent->toArray() : [];
         }
 
         /**
-         * Парсинг переводов в шаблонах Blade
+         * Parsing Translations in Blade Templates
+         *
          * @return bool
          */
-        public function parseBlade():bool
+        public function parseBlade(): bool
         {
             $list = [];
             $langDefault = $this->langDefault();
-            if (is_dir(MODX_BASE_PATH.'views')) {
-                $views = array_merge(glob(MODX_BASE_PATH.'views/*.blade.php'), glob(MODX_BASE_PATH.'views/*/*.blade.php'));
+            if (is_dir(MODX_BASE_PATH . 'views')) {
+                $views = array_merge(glob(MODX_BASE_PATH . 'views/*.blade.php'), glob(MODX_BASE_PATH . 'views/*/*.blade.php'));
 
                 if (is_array($views) && count($views)) {
                     foreach ($views as $view) {
@@ -462,13 +592,13 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Получить автоматический перевод
+         * Get automatic translation
          *
          * @param $source
          * @param $target
          * @return string
          */
-        public function getAutomaticTranslate($source, $target):string
+        public function getAutomaticTranslate($source, $target): string
         {
             $result = '';
             $langDefault = $this->langDefault();
@@ -490,14 +620,14 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Обновить поле перевода
+         * Update translation field
          *
          * @param $source
          * @param $target
          * @param $value
          * @return bool
          */
-        public function updateTranslate($source, $target, $value):bool
+        public function updateTranslate($source, $target, $value): bool
         {
             $result = false;
             $phrase = sLangTranslate::find($source);
@@ -515,7 +645,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Рендер отображения
+         * Display render
          *
          * @param $tpl
          * @param array $data
@@ -524,34 +654,34 @@ if (!class_exists('sLang')) {
         public function view($tpl, $data = [])
         {
             global $_lang;
-            if (is_file($this->basePath.'lang/'.$this->evo->config['manager_language'].'.php')) {
-                require_once $this->basePath.'lang/'.$this->evo->config['manager_language'].'.php';
+            if (is_file($this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php')) {
+                require_once $this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php';
             }
 
             $data = array_merge($data, ['modx' => $this->evo, 'data' => $data, '_lang' => $_lang]);
 
             View::getFinder()->setPaths([
-                $this->basePath.'views',
-                MODX_MANAGER_PATH.'views'
+                $this->basePath . 'views',
+                MODX_MANAGER_PATH . 'views'
             ]);
             echo View::make($tpl, $data);
             return true;
         }
 
         /**
-         * Обновить файлы переводов
+         * Update translation files
          */
-        protected function updateLangFiles():void
+        protected function updateLangFiles(): void
         {
             foreach ($this->langConfig() as &$lang) {
                 $json = sLangTranslate::all()->pluck($lang, 'key')->toJson();
 
-                file_put_contents(MODX_BASE_PATH.'core/lang/'.$lang.'.json', $json);
+                file_put_contents(MODX_BASE_PATH . 'core/lang/' . $lang . '.json', $json);
             }
         }
 
         /**
-         * Получение переводов Google
+         * Get Google Translations
          *
          * @param $text
          * @param string $source
@@ -560,8 +690,12 @@ if (!class_exists('sLang')) {
          */
         protected function googleTranslate($text, $source = 'ru', $target = 'uk')
         {
-            if ($source == 'ind') {$source = 'id';}
-            if ($target == 'ind') {$target = 'id';}
+            if ($source == 'ind') {
+                $source = 'id';
+            }
+            if ($target == 'ind') {
+                $target = 'id';
+            }
 
             if ($source == $target) {
                 return $text;
@@ -571,7 +705,7 @@ if (!class_exists('sLang')) {
 
             // Google translate URL
             $url = 'https://translate.google.com/translate_a/single?client=at&dt=t&dt=ld&dt=qca&dt=rm&dt=bd&dj=1&hl=uk-RU&ie=UTF-8&oe=UTF-8&inputm=2&otf=2&iid=1dd3b944-fa62-4b55-b330-74909a99969e';
-            $fields_string = 'sl=' . urlencode($source) . '&tl=' . urlencode($target) . '&q=' . urlencode($text) ;
+            $fields_string = 'sl=' . urlencode($source) . '&tl=' . urlencode($target) . '&q=' . urlencode($text);
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -595,7 +729,7 @@ if (!class_exists('sLang')) {
                 $out = 'No result';
             }
 
-            if(preg_match('%^\p{Lu}%u', $text) && !preg_match('%^\p{Lu}%u', $out)) { // Если оригинал с заглавной буквы то делаем и певерод с заглавной
+            if (preg_match('%^\p{Lu}%u', $text) && !preg_match('%^\p{Lu}%u', $out)) { // Если оригинал с заглавной буквы то делаем и певерод с заглавной
                 $out = mb_strtoupper(mb_substr($out, 0, 1)) . mb_substr($out, 1);
             }
 
@@ -603,7 +737,7 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Обновить данные в таблице системных настроек
+         * Update data in system settings table
          *
          * @param $name string
          * @param $value string
@@ -615,12 +749,12 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * Получить значение системной настройки в обход кеша
+         * Get system setting value bypassing cache
          *
          * @param $name string
          * @return string
          */
-        protected function getConfigValue($name):string
+        protected function getConfigValue($name): string
         {
             $return = '';
             $result = SystemSetting::where('setting_name', $name)->first();
@@ -632,10 +766,10 @@ if (!class_exists('sLang')) {
             return $return;
         }
 
-        protected function moduleUrl ()
+        protected function moduleUrl()
         {
             $module = SiteModule::whereName('sLang')->first();
-            return 'index.php?a=112&id='.$module->id;
+            return 'index.php?a=112&id=' . $module->id;
         }
     }
 }

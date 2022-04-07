@@ -9,7 +9,7 @@ use EvolutionCMS\Models\SiteContent;
 $e = evo()->event;
 
 /**
- * Заполнение полей при открытии ресурса в админке
+ * Filling in the fields when opening a resource in the admin panel
  */
 if ($e->name == 'OnDocFormPrerender') {
     global $content;
@@ -18,7 +18,7 @@ if ($e->name == 'OnDocFormPrerender') {
 }
 
 /**
- * Модификация полей перед сохранением ресурса
+ * Modifying fields before saving a resource
  */
 if ($e->name == 'OnBeforeDocFormSave') {
     if (empty($e->params['id'])) {
@@ -50,7 +50,7 @@ if ($e->name == 'OnBeforeDocFormSave') {
 }
 
 /**
- * Генерация алиаса
+ * Alias generation
  */
 if ($e->name == 'OnDocFormSave') {
     if (isset($e->params['id']) && !empty($e->params['id'])) {
@@ -83,17 +83,18 @@ if ($e->name == 'OnDocFormSave') {
         }
 
         if (!empty($data)) {
-            evolutionCMS()->db->update($data, evolutionCMS()->getDatabase()->getFullTableName('site_content'), 'id=' . $e->params['id']);
+            unset($data['seotitle'], $data['seodescription']);
+            evo()->db->update($data, evo()->getDatabase()->getFullTableName('site_content'), 'id=' . $e->params['id']);
         }
     }
 }
 
 /**
- * Подмена стандартных полей на мультиязычные фронтенд
+ * Replacing standard fields with multilingual frontend
  */
 if ($e->name == 'OnAfterLoadDocumentObject') {
     $sLang  = new sLang();
-    $lang = evolutionCMS()->getLocale();
+    $lang = evo()->getLocale();
 
     $langContentField = $sLang->getLangContent($e->params['documentObject']['id'], $lang);
 
@@ -103,24 +104,24 @@ if ($e->name == 'OnAfterLoadDocumentObject') {
         }
     }
 
-    evolutionCMS()->documentObject = $e->params['documentObject'];
+    evo()->documentObject = $e->params['documentObject'];
 }
 
 /**
- * Параметризация текущего языка
+ * Parameterization of the current language
  */
 if ($e->name == 'OnWebPageInit') {
     $hash = '';
-    $identifier = evolutionCMS()->getConfig('error_page', 1);
-    $sLangDefault = evolutionCMS()->getConfig('s_lang_default', 'uk');
+    $identifier = evo()->getConfig('error_page', 1);
+    $sLangDefault = evo()->getConfig('s_lang_default', 'uk');
 
     if (isset($_SERVER['REQUEST_URI'])) {
         $url = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'), 2);
-        $sLangFront = explode(',', evolutionCMS()->getConfig('s_lang_front', 'uk'));
+        $sLangFront = explode(',', evo()->getConfig('s_lang_front', 'uk'));
 
         if (trim($url[0])) {
-            if ($url[0] == $sLangDefault && evolutionCMS()->config['s_lang_default_show'] != 1) {
-                evolutionCMS()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));
+            if ($url[0] == $sLangDefault && evo()->config['s_lang_default_show'] != 1) {
+                evo()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));
                 die;
             }
 
@@ -131,15 +132,15 @@ if ($e->name == 'OnWebPageInit') {
         }
     }
 
-    evolutionCMS()->setLocale($sLangDefault);
-    evolutionCMS()->config['lang'] = $sLangDefault;
+    evo()->setLocale($sLangDefault);
+    evo()->config['lang'] = $sLangDefault;
 
-    if (evolutionCMS()->config['s_lang_default'] != $sLangDefault || evolutionCMS()->config['s_lang_default_show'] == 1) {
-        evolutionCMS()->config['base_url'] .= $sLangDefault.'/';
+    if (evo()->config['s_lang_default'] != $sLangDefault || evo()->config['s_lang_default_show'] == 1) {
+        evo()->config['base_url'] .= $sLangDefault.'/';
     }
 
     if (!isset($_SERVER['REQUEST_URI']) || !trim($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI'] == '/') {
-        $identifier = evolutionCMS()->config['site_start'];
+        $identifier = evo()->getConfig('site_start', 1);
     } else {
         $q = trim($_SERVER['REQUEST_URI'], '/');
         $hash = '_'.md5(serialize($q));
@@ -150,17 +151,17 @@ if ($e->name == 'OnWebPageInit') {
         }
     }
 
-    evolutionCMS()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
+    evo()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
 
-    if ($identifier == evolutionCMS()->getConfig('error_page', 1)) {
-        evolutionCMS()->invokeEvent('OnPageNotFound');
+    if ($identifier == evo()->getConfig('error_page', 1)) {
+        evo()->invokeEvent('OnPageNotFound');
     }
 
-    evolutionCMS()->sendForward($identifier);
+    evo()->sendForward($identifier);
     exit();
 }
 
 if ($e->name == 'OnDocFormRender') {
     $sLang  = new sLang();
-    evolutionCMS()->regClientScript($sLang->baseUrl.'scripts/wisywingEditor.js');
+    evo()->regClientScript($sLang->baseUrl.'scripts/wisywingEditor.js');
 }
