@@ -1,5 +1,5 @@
 --
--- Структура таблицы `{PREFIX}s_translates`
+-- Table structure `{PREFIX}s_translates`
 --
 
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_translates` (
 -- --------------------------------------------------------
 
 --
--- Таблица переводов ресурса `{PREFIX}s_lang_content`
+-- Resource translation table `{PREFIX}s_lang_content`
 --
 
 CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_content` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}s_lang_content` (
 -- --------------------------------------------------------
 
 --
--- Таблица настроек `{PREFIX}system_settings`
+-- Settings table `{PREFIX}system_settings`
 --
 
 REPLACE INTO `{PREFIX}system_settings` (`setting_name`, `setting_value`) VALUES ('s_lang_enable', '1')

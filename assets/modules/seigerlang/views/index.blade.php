@@ -28,6 +28,9 @@
             <script>tpResources.setSelectedTab('{{$get}}Tab');</script>
         </div>
     </div>
+    <div id="copyright">
+        {!!$_lang['slang_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">SeigerIT</a></strong>
+    </div>
 @endsection
 
 @push('scripts.top')
@@ -49,7 +52,7 @@
             $('.select2').select2();
         });
 
-        // Валидация и сохранение формы
+        // Form Validation and Saving
         function saveForm(selector) {
             var errors    = 0;
             var messages  = "";
@@ -66,7 +69,7 @@
                             $(v).parent().removeClass("is-invalid").addClass("is-valid");
                         }
                         break;
-                    case "textMustContainDefault": // Должно содержать значение дефолтного языка
+                    case "textMustContainDefault": // Must contain the value of the default language
                         var _default = $(v).parents('tbody').find('[name^="s_lang_default"]').val();
                         _index = $(v).val().indexOf(_default);
                         if (_index >= $(v).val().length || _index < 0 || isNaN(_index)) {
@@ -77,7 +80,7 @@
                             $(v).parent().removeClass("is-invalid").addClass("is-valid");
                         }
                         break;
-                    case "textMustContainSiteLang": // Должно содержать значения списка языков сайта
+                    case "textMustContainSiteLang": // Must contain site language list values
                         var _default = $(v).parents('tbody').find('[name^="s_lang_default"]').val();
                         var _config = $(v).parents('tbody').find('[name^="s_lang_config"]').val();
                         var _valid = 1;
@@ -113,6 +116,8 @@
         }
     </script>
     <style>
+        #copyright{position:fixed;bottom:0;right:0;background-color: #0057b8;color: #ffd700;padding: 5px;}
+        #copyright a{color: #ffd700;}
         .notifier{position:fixed;display:none;top:0;left:0;width:100%;height:100vh;overflow-y:auto;z-index:9999;background:rgba(255,255,255,0.8);}
         .notifier-txt{position:absolute;width:100%;text-align:center;top:50%;left:50%;background:#fff;padding:30px;font-size:18px;-webkit-transform:translateY(-50%) translateX(-50%);-moz-transform:translateY(-50%) translateX(-50%);-ms-transform:translateY(-50%) translateX(-50%);-o-transform:translateY(-50%) translateX(-50%);transform:translateY(-50%) translateX(-50%);}
         .notifier-error{color:red;}

@@ -1,138 +1,79 @@
 # sLang
-Seiger Lang Management Module for Evolution CMS admin panel. Based on **templatesEdit3** plugin.
+Seiger Lang multi language Management Module for Evolution CMS admin panel.
 
-## Фишки ##
- * Автоматический перевод фраз через Google
- * Автоматический поиск переводов в шаблонах
+## Features ##
+ * Based on **templatesEdit3** plugin.
+ * Automatic translation of phrases through Google
+ * Automatic search for translations in templates
 
-## Использование в шаблонах ##
-Текущий язык:
+## Use in templates ##
+Current language:
 ```php
     [(lang)]
 ```
 
-Перевод фраз:
+Translation of phrases:
 ```php
     @lang('phrase')
 ```
 
-список языков фронтенд:
+List of frontend languages:
 ```php
     [(s_lang_front)]
 ```
-## Настройка ##
-Этот модуль использует плагин **templatesEdit3** для отображения мультиязычных полей контента в админке сайта.
+## Setting ##
+This module uses the **templatesEdit3** plugin to display multilingual content fields in the site's admin area.
 
-Если после настройки модуля, на вкладке редактировния ресурса не отобразились поля мультиязычности, тогда необходимо проверить файл *MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php'*
+If, after setting up the module, the multilingual fields are not displayed on the resource editing tab, then you need to check the file *MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php'*
 ```php
-<?php global $_lang, $modx;
+<?php global $_lang, $modx; 
 return [
-	'pagetitle_en' => [
+	'en_pagetitle' => [
 		'title' => $_lang['resource_title'].' (EN)',
 		'help' => $_lang['resource_title_help'],
 		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
-	'longtitle_en' => [
+	'en_longtitle' => [
 		'title' => $_lang['long_title'].' (EN)',
 		'help' => $_lang['resource_long_title_help'],
 		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
-	'description_en' => [
+	'en_description' => [
 		'title' => $_lang['resource_description'].' (EN)',
 		'help' => $_lang['resource_description_help'],
 		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
-	'introtext_en' => [
+	'en_introtext' => [
 		'title' => $_lang['resource_summary'].' (EN)',
 		'help' => $_lang['resource_summary_help'],
 		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
-	'content_en' => [
+	'en_content' => [
 		'title' => $_lang['resource_content'].' (EN)',
 		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
-	'menutitle_en' => [
+	'en_menutitle' => [
 		'title' => $_lang['resource_opt_menu_title'].' (EN)',
 		'help' => $_lang['resource_opt_menu_title_help'],
 		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
-	'pagetitle_ru' => [
-		'title' => $_lang['resource_title'].' (RU)',
-		'help' => $_lang['resource_title_help'],
+	'en_seotitle' => [
+		'title' => $_lang['resource_title'].' SEO (EN)',
 		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
-	'longtitle_ru' => [
-		'title' => $_lang['long_title'].' (RU)',
-		'help' => $_lang['resource_long_title_help'],
+	'en_seodescription' => [
+		'title' => $_lang['resource_description'].' SEO (EN)',
 		'default' => '',
-		'save' => true,
-	],
-	'description_ru' => [
-		'title' => $_lang['resource_description'].' (RU)',
-		'help' => $_lang['resource_description_help'],
-		'default' => '',
-		'save' => true,
-	],
-	'introtext_ru' => [
-		'title' => $_lang['resource_summary'].' (RU)',
-		'help' => $_lang['resource_summary_help'],
-		'default' => '',
-		'save' => true,
-	],
-	'content_ru' => [
-		'title' => $_lang['resource_content'].' (RU)',
-		'default' => '',
-		'save' => true,
-	],
-	'menutitle_ru' => [
-		'title' => $_lang['resource_opt_menu_title'].' (RU)',
-		'help' => $_lang['resource_opt_menu_title_help'],
-		'default' => '',
-		'save' => true,
-	],
-	'pagetitle_ua' => [
-		'title' => $_lang['resource_title'].' (UA)',
-		'help' => $_lang['resource_title_help'],
-		'default' => '',
-		'save' => true,
-	],
-	'longtitle_ua' => [
-		'title' => $_lang['long_title'].' (UA)',
-		'help' => $_lang['resource_long_title_help'],
-		'default' => '',
-		'save' => true,
-	],
-	'description_ua' => [
-		'title' => $_lang['resource_description'].' (UA)',
-		'help' => $_lang['resource_description_help'],
-		'default' => '',
-		'save' => true,
-	],
-	'introtext_ua' => [
-		'title' => $_lang['resource_summary'].' (UA)',
-		'help' => $_lang['resource_summary_help'],
-		'default' => '',
-		'save' => true,
-	],
-	'content_ua' => [
-		'title' => $_lang['resource_content'].' (UA)',
-		'default' => '',
-		'save' => true,
-	],
-	'menutitle_ua' => [
-		'title' => $_lang['resource_opt_menu_title'].' (UA)',
-		'help' => $_lang['resource_opt_menu_title_help'],
-		'default' => '',
-		'save' => true,
+		'save' => '',
 	],
 ];
 ```
 
-Чтобы включить у поля контент текстовый редактор, необходимо выбрать ***Type: Rich Text*** для поля при настройке полей шаблона в templatesEdit3.
+To enable a text editor for a content field, you must select ***Type: Rich Text*** for the field when setting the template fields in templatesEdit3.
