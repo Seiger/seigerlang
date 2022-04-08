@@ -29,7 +29,7 @@
         </div>
     </div>
     <div id="copyright">
-        {!!$_lang['slang_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">SeigerIT</a></strong>
+        {!!$_lang['slang_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger IT</a></strong>
     </div>
 @endsection
 
@@ -56,7 +56,7 @@
             validates.each(function(k, v) {
                 var rule = $(v).attr("data-validate").split(":");
                 switch (rule[0]) {
-                    case "textNoEmpty": // Не пустое поле
+                    case "textNoEmpty": // Not an empty field
                         if ($(v).val().length < 1) {
                             messages = messages + $(v).parent().find(".error-text").text() + "<br/>";
                             $(v).parent().removeClass("is-valid").addClass("is-invalid");
