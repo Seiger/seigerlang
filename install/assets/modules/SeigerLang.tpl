@@ -13,7 +13,7 @@
  * @internal	@guid
  * @internal	@shareparams
  * @internal	@dependencies
- * @internal	@modx_category lang
+ * @internal	@modx_category Manager and Admin
  * @internal	@installset base, sample
 */
 

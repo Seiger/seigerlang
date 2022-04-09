@@ -8,6 +8,7 @@
  * @version 1.1
  * @author  Seiger
  * @internal    @events OnWebPageInit,OnAfterLoadDocumentObject,OnDocFormPrerender,OnBeforeDocFormSave,OnDocFormSave,OnDocFormRender
+ * @internal	@modx_category Manager and Admin
  * @internal    @installset base, sample
  */
 
