@@ -9,6 +9,7 @@
  * @author	Seiger
  * @lastupdate	28/12/2021
  * @license	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
+ * @internal	@icon fa fa-globe-americas
  * @internal	@properties
  * @internal	@guid
  * @internal	@shareparams
