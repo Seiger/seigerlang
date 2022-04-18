@@ -512,6 +512,10 @@ if (!class_exists('sLang')) {
                         $contentLang[$currentLang . '_' . $key] = $value;
                     }
                 }
+            } else {
+                foreach ($this->siteContentFields as $siteContentField) {
+                    $contentLang[$this->langDefault() . '_' . $siteContentField] = (string)$content[$siteContentField];
+                }
             }
 
             return array_merge($content, $contentLang);
