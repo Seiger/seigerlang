@@ -58,13 +58,15 @@ if ($e->name == 'OnDocFormSave') {
         $sLangDefault = $sLang->langDefault();
         $data = [];
 
-        if (request()->has($sLangDefault)) {
-            $data = evolutionCMS()->db->escape(request($sLangDefault));
+        foreach (request()->all() as $key => $value) {
+            if (str_starts_with($key, $sLang->langDefault().'_')) {
+                $keyName = str_replace($sLang->langDefault().'_', '', $key);
+                $data[$keyName] = $value;
+            }
         }
 
-        if (request()->has('alias') && !trim(request('alias')) && request()->has('en')) {
-            $request = request('en');
-            $alias = strtolower(evolutionCMS()->stripAlias(trim($request['pagetitle'])));
+        if (request()->has('alias') && !trim(request('alias')) && request()->has('en_pagetitle')) {
+            $alias = strtolower(evo()->stripAlias(trim(request('en_pagetitle'))));
             if (SiteContent::withTrashed()
                     ->where('id', '<>', $id)
                     ->where('alias', $alias)->count() > 0) {
