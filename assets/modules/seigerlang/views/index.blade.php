@@ -2,8 +2,7 @@
 
 @section('content')
     <div class="notifier"><div class="notifier-txt"></div></div>
-    <h1><i class="fa fa-globe-americas"></i> {{$_lang['slang_title']}}</h1>
-    <p style="margin-left:15px;">{!!$_lang['slang_description']!!}</p>
+    <h1 data-tooltip="{{$_lang["slang_description"]}}"><i class="fa fa-globe-americas"></i> {{$_lang['slang_title']}}</h1>
 
     <div class="sectionBody">
         <div class="tab-pane" id="resourcesPane">
