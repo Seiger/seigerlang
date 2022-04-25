@@ -123,13 +123,13 @@ if ($e->name == 'OnWebPageInit') {
 
         if (trim($url[0])) {
             if ($url[0] == $sLangDefault && evo()->config['s_lang_default_show'] != 1) {
-                evo()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));
+                evo()->sendRedirect(substr_replace($_SERVER['REQUEST_URI'], '', 0, strlen($url[0] . '/')));
                 die;
             }
 
             if (in_array($url[0], $sLangFront)) {
                 $sLangDefault = $url[0];
-                $_SERVER['REQUEST_URI'] = str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']);
+                $_SERVER['REQUEST_URI'] = substr_replace($_SERVER['REQUEST_URI'], '', 0, strlen($url[0] . '/'));
             }
         }
     }
