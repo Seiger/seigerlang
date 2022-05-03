@@ -7,7 +7,7 @@
  * @category    plugin
  * @version 1.1
  * @author  Seiger
- * @internal    @events OnWebPageInit,OnPageNotFound,OnAfterLoadDocumentObject,OnDocFormPrerender,OnBeforeDocFormSave,OnDocFormSave
+ * @internal    @events OnWebPageInit,OnPageNotFound,OnParseDocument,OnAfterLoadDocumentObject,OnDocFormPrerender,OnBeforeDocFormSave,OnDocFormSave
  * @internal	@modx_category Manager and Admin
  * @internal    @installset base, sample
  */
