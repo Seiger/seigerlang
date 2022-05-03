@@ -501,7 +501,7 @@ if (!class_exists('sLang')) {
                 }
             }
 
-            $translates = sLangContent::whereResource($content['id'])->get()->toArray();
+            $translates = sLangContent::whereResource($content['id'] ?? 0)->get()->toArray();
 
             if (is_array($translates) && count($translates)) {
                 foreach ($translates as $translate) {

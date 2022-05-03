@@ -16,7 +16,7 @@ if ($e->name == 'OnParseDocument') {
     $base_url = UrlProcessor::makeUrl(evo()->getConfig('site_start', 1), '', '', 'full');
 
     // parse id as number
-    evo()->documentOutput = str_replace('[*id*]', evo()->documentObject['id'], evo()->documentOutput);
+    evo()->documentOutput = str_replace('[*id*]', (evo()->documentObject['id'] ?? evo()->getConfig('site_start', 1)), evo()->documentOutput);
 
     // parse language urls
     preg_match_all('/\[~~(\d+)~~\]/', evo()->documentOutput, $match);
