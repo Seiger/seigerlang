@@ -430,6 +430,7 @@ if (!class_exists('sLang')) {
                     ];
                     $custom_fields[$lang . '_content'] = [
                         'title' => '$_lang[\'resource_content\'].\' (' . strtoupper($lang) . ')\'',
+                        'help' => "",
                         'default' => "",
                         'save' => ""
                     ];
@@ -441,11 +442,13 @@ if (!class_exists('sLang')) {
                     ];
                     $custom_fields[$lang . '_seotitle'] = [
                         'title' => '$_lang[\'resource_title\'].\' SEO (' . strtoupper($lang) . ')\'',
+                        'help' => "",
                         'default' => "",
                         'save' => ""
                     ];
                     $custom_fields[$lang . '_seodescription'] = [
                         'title' => '$_lang[\'resource_description\'].\' SEO (' . strtoupper($lang) . ')\'',
+                        'help' => "",
                         'default' => "",
                         'save' => ""
                     ];
@@ -514,7 +517,7 @@ if (!class_exists('sLang')) {
                 }
             } else {
                 foreach ($this->siteContentFields as $siteContentField) {
-                    $contentLang[$this->langDefault() . '_' . $siteContentField] = (string)$content[$siteContentField];
+                    $contentLang[$this->langDefault() . '_' . $siteContentField] = (string)($content[$siteContentField] ?? '');
                 }
             }
 
