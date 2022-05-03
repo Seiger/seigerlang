@@ -66,7 +66,7 @@ if ($e->name == 'OnDocFormSave') {
         }
 
         if (request()->has('alias') && !trim(request('alias')) && request()->has('en_pagetitle')) {
-            $alias = strtolower(evo()->stripAlias(trim(request('en_pagetitle'))));
+            $alias = strtolower(evolutionCMS()->stripAlias(trim(request('en_pagetitle'))));
             if (SiteContent::withTrashed()
                     ->where('id', '<>', $id)
                     ->where('alias', $alias)->count() > 0) {
@@ -112,7 +112,7 @@ if ($e->name == 'OnAfterLoadDocumentObject') {
 /**
  * Parameterization of the current language
  */
-if ($e->name == 'OnWebPageInit') {
+if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
     $hash = '';
     $identifier = evo()->getConfig('error_page', 1);
     $sLangDefault = evo()->getConfig('s_lang_default', 'uk');
@@ -123,13 +123,13 @@ if ($e->name == 'OnWebPageInit') {
 
         if (trim($url[0])) {
             if ($url[0] == $sLangDefault && evo()->config['s_lang_default_show'] != 1) {
-                evo()->sendRedirect(substr_replace($_SERVER['REQUEST_URI'], '', 0, strlen($url[0] . '/')));
+                evo()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));
                 die;
             }
 
             if (in_array($url[0], $sLangFront)) {
                 $sLangDefault = $url[0];
-                $_SERVER['REQUEST_URI'] = substr_replace($_SERVER['REQUEST_URI'], '', 0, strlen($url[0] . '/'));
+                $_SERVER['REQUEST_URI'] = str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']);
             }
         }
     }
@@ -155,7 +155,7 @@ if ($e->name == 'OnWebPageInit') {
 
     evo()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
 
-    if ($identifier == evo()->getConfig('error_page', 1)) {
+    if ($identifier == evo()->getConfig('error_page', 1) && $identifier != evo()->getConfig('site_start', 1)) {
         evo()->invokeEvent('OnPageNotFound');
     }
 
@@ -163,7 +163,7 @@ if ($e->name == 'OnWebPageInit') {
     exit();
 }
 
-if ($e->name == 'OnDocFormRender') {
+/*if ($e->name == 'OnDocFormRender') {
     $sLang  = new sLang();
     evo()->regClientScript($sLang->baseUrl.'scripts/wisywingEditor.js');
-}
+}*/
