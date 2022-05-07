@@ -29,6 +29,9 @@ if ($e->name == 'OnParseDocument') {
                     evo()->documentOutput = str_replace($value, $base_url . evo()->getConfig('lang') . '/', evo()->documentOutput);
                 }
             } else {
+                if (evo()->getConfig('lang') != $sLang->langDefault()) {
+                    evo()->setConfig('virtual_dir', evo()->getConfig('lang').'/');
+                }
                 evo()->documentOutput = str_replace($value, UrlProcessor::makeUrl($match[1][$key], '', '', 'full'), evo()->documentOutput);
             }
         }
@@ -139,7 +142,7 @@ if ($e->name == 'OnAfterLoadDocumentObject') {
 /**
  * Parameterization of the current language
  */
-if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
+if (in_array($e->name, ['OnPageNotFound'])) {
     $hash = '';
     $identifier = evo()->getConfig('error_page', 1);
     $sLangDefault = evo()->getConfig('s_lang_default', 'uk');
@@ -186,8 +189,31 @@ if (in_array($e->name, ['OnPageNotFound', 'OnWebPageInit'])) {
         evo()->invokeEvent('OnPageNotFound');
     }
 
+    evo()->invokeEvent('OnWebPageInit', ['lang' => $sLangDefault]);
     evo()->sendForward($identifier);
     exit();
+}
+
+if (in_array($e->name, ['OnWebPageInit'])) {
+    if (isset($e->params['lang'])) {
+        $sLangDefault = $e->params['lang'];
+    } else {
+        $sLangDefault = evo()->getConfig('s_lang_default', 'uk');
+
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $url = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'), 2);
+            $sLangFront = explode(',', evo()->getConfig('s_lang_front', 'uk'));
+
+            if (trim($url[0])) {
+                if (in_array($url[0], $sLangFront)) {
+                    $sLangDefault = $url[0];
+                }
+            }
+        }
+    }
+
+    evo()->setLocale($sLangDefault);
+    evo()->config['lang'] = $sLangDefault;
 }
 
 /*if ($e->name == 'OnDocFormRender') {
