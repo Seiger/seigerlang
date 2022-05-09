@@ -5,7 +5,6 @@
 return [
     'en' => ['name' => 'English',       'short' => 'Eng',      'ISO 639-1' => 'en', 'ISO 639-3' => 'eng',   'country' => 'English'],
     'uk' => ['name' => 'Українська',    'short' => 'Укр',      'ISO 639-1' => 'uk', 'ISO 639-3' => 'ukr',   'country' => 'Ukraine'],
-    'ru' => ['name' => 'Русский',       'short' => 'Рус',      'ISO 639-1' => 'ru', 'ISO 639-3' => 'rus',   'country' => 'Russia'],
     'ab' => ['name' => 'Абхазский',     'short' => 'Абх',      'ISO 639-1' => 'ab', 'ISO 639-3' => 'abk',   'country' => 'Abkhazia'],
     'az' => ['name' => 'Azərbaycanca',  'short' => 'Azərb',    'ISO 639-1' => 'az', 'ISO 639-3' => 'aze',   'country' => 'Azerbaijan'],
     'be' => ['name' => 'Беларуская',    'short' => 'Бел',      'ISO 639-1' => 'be', 'ISO 639-3' => 'bel',   'country' => 'Belarus'],
@@ -45,6 +44,7 @@ return [
     'fi' => ['name' => 'suomi',         'short' => 'suomi',     'ISO 639-1' => 'fi', 'ISO 639-3' => 'fin',   'country' => 'Finland'],
     'km' => ['name' => 'ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ','short' => 'ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ',    'ISO 639-1' => 'km', 'ISO 639-3' => 'khm',   'country' => 'Cambodia'],
     'ko' => ['name' => '한국어',         'short' => '한국어',     'ISO 639-1' => 'ko', 'ISO 639-3' => 'kor',   'country' => 'South Korea'],
-    'ind' => ['name' => 'Bahasa Indonesia','short' => 'Bahasa',  'ISO 639-1' => 'id', 'ISO 639-3' => 'ind',   'country' => 'Indonesia'],
+    'id' => ['name' => 'Bahasa Indonesia','short' => 'Bahasa',  'ISO 639-1' => 'id', 'ISO 639-3' => 'ind',   'country' => 'Indonesia'],
     'ms' => ['name' => 'Melayu',       'short' => 'Melayu',      'ISO 639-1' => 'ms', 'ISO 639-3' => 'msa',   'country' => 'Malaysia'],
+    'ru' => ['name' => 'Русский',       'short' => 'Рус',      'ISO 639-1' => 'ru', 'ISO 639-3' => 'rus',   'country' => 'Russia'],
 ];

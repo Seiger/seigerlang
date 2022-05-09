@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="notifier"><div class="notifier-txt"></div></div>
-    <h1 data-tooltip="{{$_lang["slang_description"]}}"><i class="fa fa-globe-americas"></i> {{$_lang['slang_title']}}</h1>
+    <h1><i class="fa fa-globe-americas"></i> {{$_lang['slang_title']}}</h1>
+    <p style="margin-left:15px;">{!!$_lang['slang_description']!!}</p>
 
     <div class="sectionBody">
         <div class="tab-pane" id="resourcesPane">
@@ -28,7 +29,9 @@
         </div>
     </div>
     <div id="copyright">
-        {!!$_lang['slang_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger IT</a></strong>
+        <span class="badge bg-seigerit">
+            {!!$_lang['slang_copyright']!!} <strong><a href="https://seigerit.com/" target="_blank">Seiger IT</a></strong>
+        </span>
     </div>
 @endsection
 
@@ -111,13 +114,19 @@
         }
     </script>
     <style>
-        #copyright{position:fixed;bottom:0;right:0;background-color: #0057b8;color: #ffd700;padding: 5px;}
-        #copyright a{color: #ffd700;}
+        .badge.bg-seigerit{background-color:#0057b8;color:#ffd700;font-size:85%;}
+        #copyright{position:fixed;bottom:0;right:0;padding:3px;}
+        #copyright a{color:#ffd700;}
+        #copyright .badge{font-size:95%;}
         .notifier{position:fixed;display:none;top:0;left:0;width:100%;height:100vh;overflow-y:auto;z-index:9999;background:rgba(255,255,255,0.8);}
         .notifier-txt{position:absolute;width:100%;text-align:center;top:50%;left:50%;background:#fff;padding:30px;font-size:18px;-webkit-transform:translateY(-50%) translateX(-50%);-moz-transform:translateY(-50%) translateX(-50%);-ms-transform:translateY(-50%) translateX(-50%);-o-transform:translateY(-50%) translateX(-50%);transform:translateY(-50%) translateX(-50%);}
         .notifier-error{color:red;}
         .notifier-success{color:green;}
         .is-invalid .select2-selection, .needs-validation ~ span > .select2-dropdown{border-color:red !important;}
         .is-valid .select2-selection, .needs-validation ~ span > .select2-dropdown{border-color:green !important;}
+        .modal{top:50px;font-weight:bold;}
+        .fade:not(.show){opacity:initial;}
+        .modal-backdrop {background-color:rgba(0, 0, 0, 0.5);}
+        .modal-header{margin-top: 1rem;}
     </style>
 @endpush

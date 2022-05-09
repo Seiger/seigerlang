@@ -1,5 +1,4 @@
 <?php
-
 $_lang['slang_title'] = 'Управління налаштуваннями мов сайту';
 $_lang['slang_description'] = '<b>sLang</b> дозволяє виконувати переклад статичних текстів (спливаючих повідомлень, назв кнопок) та контенту по всьому сайту.';
 $_lang["slang_dictionary"] = 'Словник';
@@ -20,6 +19,7 @@ $_lang['slang_auto_translate'] = 'Автопереклад';
 $_lang['slang_seotitle'] = 'SEO заголовок документа';
 $_lang['slang_seodescription'] = 'SEO опис документа';
 $_lang['slang_copyright'] = 'Розробка';
+$_lang['slang_add_translation'] = 'Додати переклад';
 $_lang['slang_lang_en'] = 'Англійська';
 $_lang['slang_lang_uk'] = 'Українська';
 $_lang['slang_lang_ru'] = 'Російська';

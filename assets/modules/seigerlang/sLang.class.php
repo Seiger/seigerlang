@@ -651,6 +651,40 @@ if (!class_exists('sLang')) {
         }
 
         /**
+         * Save new translate and return HTML
+         *
+         * @param array $data
+         * @return string|void
+         */
+        public function saveTranslate(array $data)
+        {
+            if (isset($data['translate']) && count($data['translate'])) {
+                $phrase = sLangTranslate::firstOrCreate(['key' => $data['translate']['key']]);
+                foreach ($data['translate'] as $field => $translate) {
+                    $phrase->{$field} = $translate;
+                }
+                $phrase->save();
+
+                $this->updateLangFiles();
+
+                return $this->getElementRow($phrase);
+            }
+        }
+
+        /**
+         * Get automatic translation without save
+         *
+         * @param $text
+         * @param $source
+         * @param $target
+         * @return string
+         */
+        public function getAutomaticTranslateOnly($text, $source, $target)
+        {
+            return $this->googleTranslate($text, $source, $target);
+        }
+
+        /**
          * Display render
          *
          * @param $tpl
@@ -675,6 +709,39 @@ if (!class_exists('sLang')) {
         }
 
         /**
+         * Get html element for row table
+         *
+         * @param $data
+         * @return string
+         */
+        protected function getElementRow($data)
+        {
+            global $_lang;
+            if (is_file($this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php')) {
+                require_once $this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php';
+            }
+
+            $html = '<tr><td>'.$data->key.'</td>';
+            foreach($this->langConfig() as $langConfig) {
+                $html .= '<td data-tid="'.$data->tid.'" data-lang="'.$langConfig.'">';
+                if ($langConfig == $this->langDefault()) {
+                    $html .= '<input type="text" class="form-control" name="sLang['.$data->tid.']['.$langConfig.']" value="'.$data->{$langConfig}.'" />';
+                } else {
+                    $html .= '<div class="input-group">';
+                    $html .= '<input type="text" class="form-control" name="sLang['.$data->tid.']['.$langConfig.']" value="'.$data->{$langConfig}.'" />';
+                    $html .= '<span class="input-group-btn">';
+                    $html .= '<button class="btn btn-light js_translate" type="button" title="'.$_lang['slang_auto_translate'].' '.strtoupper($this->langDefault()).' => '.strtoupper($langConfig).'" style="padding:0 5px;color:#0275d8;">';
+                    $html .= '<i class="fa fa-language" style="font-size:xx-large;"></i>';
+                    $html .= '</button></span></div>';
+                }
+                $html .= '</td>';
+            }
+            $html .= '</tr>';
+
+            return $html;
+        }
+
+        /**
          * Update translation files
          */
         protected function updateLangFiles(): void
@@ -694,15 +761,8 @@ if (!class_exists('sLang')) {
          * @param string $target
          * @return string
          */
-        protected function googleTranslate($text, $source = 'ru', $target = 'uk')
+        protected function googleTranslate($text, $source = 'uk', $target = 'en')
         {
-            if ($source == 'ind') {
-                $source = 'id';
-            }
-            if ($target == 'ind') {
-                $target = 'id';
-            }
-
             if ($source == $target) {
                 return $text;
             }

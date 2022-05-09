@@ -1,5 +1,4 @@
 <?php
-
 $_lang['slang_title'] = 'Managing site language settings';
 $_lang['slang_description'] = '<b>sLang</b> allows you to translate static texts (pop-up messages, button names) as well as content throughout the site.';
 $_lang["slang_dictionary"] = 'Dictionary';
@@ -20,6 +19,7 @@ $_lang['slang_auto_translate'] = 'Auto-translation';
 $_lang['slang_seotitle'] = 'SEO title document';
 $_lang['slang_seodescription'] = 'SEO description document';
 $_lang['slang_copyright'] = 'Development';
+$_lang['slang_add_translation'] = 'Add translation';
 $_lang ['slang_lang_en'] = 'English';
 $_lang ['slang_lang_uk'] = 'Ukrainian';
 $_lang ['slang_lang_ru'] = 'Russian';

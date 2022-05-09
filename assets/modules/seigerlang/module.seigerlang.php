@@ -30,6 +30,12 @@ switch ($data['get']) {
             case "update":
                 $result = $sLang->updateTranslate($_POST['source'], $_POST['target'], $_POST['value']);
                 die($result);
+            case "translate-only":
+                $result = $sLang->getAutomaticTranslateOnly($_POST['text'], $_POST['source'], $_POST['target']);
+                die($result);
+            case "add-new":
+                $result = $sLang->saveTranslate($_POST);
+                die($result);
             default:
                 break;
         }
