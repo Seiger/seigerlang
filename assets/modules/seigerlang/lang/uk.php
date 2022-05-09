@@ -62,5 +62,5 @@ $_lang['slang_lang_tr'] = 'Турецька';
 $_lang['slang_lang_fi'] = 'Фінська';
 $_lang['slang_lang_km'] = 'Кхмерська';
 $_lang['slang_lang_ko'] = 'Корейська';
-$_lang['slang_lang_ind'] = 'Індонезійська';
+$_lang['slang_lang_id'] = 'Індонезійська';
 $_lang['slang_lang_ms'] = 'Малайська';
