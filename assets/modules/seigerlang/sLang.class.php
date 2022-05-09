@@ -390,17 +390,6 @@ if (!class_exists('sLang')) {
 
                 if (isset($custom_fields['createdon'])) {
                     unset($custom_fields['createdon']);
-                    $custom_fields['createdon'] = [
-                        'default' => '$modx->toDateFormat(time())',
-                        'save' => 'true',
-                        'prepareSave' => 'function ($data, $modx) {' . "\r\n" .
-                            "\t\t\t" . 'if (!empty($data)) {' . "\r\n" .
-                            "\t\t\t\t" . 'return $modx->toTimeStamp($data);' . "\r\n" .
-                            "\t\t\t" . '} else {' . "\r\n" .
-                            "\t\t\t\t" . 'return time();' . "\r\n" .
-                            "\t\t\t" . '}' . "\r\n" .
-                            "\t\t" . '}'
-                    ];
                 }
 
                 foreach ($langConfig as $lang) {

@@ -91,7 +91,7 @@ if ($e->name == 'OnDocFormSave') {
         foreach (request()->all() as $key => $value) {
             if (str_starts_with($key, $sLang->langDefault().'_')) {
                 $keyName = str_replace($sLang->langDefault().'_', '', $key);
-                $data[$keyName] = $value;
+                $data[$keyName] = evo()->getDatabase()->escape($value);
             }
         }
 
