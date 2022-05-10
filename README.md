@@ -1,5 +1,6 @@
 # sLang
 Seiger Lang multi language Management Module for Evolution CMS admin panel.
+https://seiger.github.io/seigerlang/
 
 ## Features ##
  * Based on **templatesEdit3** plugin.
