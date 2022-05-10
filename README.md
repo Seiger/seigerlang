@@ -1,13 +1,21 @@
-# sLang
+# Welcome to sLang
+
+![slang](https://user-images.githubusercontent.com/12029039/167660172-9596574a-47ae-4304-a389-814bfa4c9e87.png)
+[![GitHub version](https://img.shields.io/badge/version-v.1.1.1-blue)](https://github.com/Seiger/seigerlang/releases)
+[![CMS Evolution](https://img.shields.io/badge/CMS-Evolution-brightgreen.svg)](https://github.com/evolution-cms/evolution)
+![PHP version](https://img.shields.io/badge/PHP->=v7.4-red.svg?php=7.4)
+
 Seiger Lang multi language Management Module for Evolution CMS admin panel.
-https://seiger.github.io/seigerlang/
 
-## Features ##
- * Based on **templatesEdit3** plugin.
- * Automatic translation of phrases through Google
- * Automatic search for translations in templates
+The work of the module is based on the use of the standard Laravel functionality for multilingualism.
 
-## Use in templates ##
+## Features
+- [x] Based on **templatesEdit3** plugin.
+- [x] Automatic translation of phrases through Google
+- [x] Automatic search for translations in templates
+- [x] Unlimited translation languages
+
+## Use in templates
 Current language:
 ```php
     [(lang)]
@@ -22,59 +30,10 @@ List of frontend languages:
 ```php
     [(s_lang_front)]
 ```
-## Setting ##
-This module uses the **templatesEdit3** plugin to display multilingual content fields in the site's admin area.
 
-If, after setting up the module, the multilingual fields are not displayed on the resource editing tab, then you need to check the file *MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php'*
+Multilingual link:
 ```php
-<?php global $_lang, $modx; 
-return [
-	'en_pagetitle' => [
-		'title' => $_lang['resource_title'].' (EN)',
-		'help' => $_lang['resource_title_help'],
-		'default' => '',
-		'save' => '',
-	],
-	'en_longtitle' => [
-		'title' => $_lang['long_title'].' (EN)',
-		'help' => $_lang['resource_long_title_help'],
-		'default' => '',
-		'save' => '',
-	],
-	'en_description' => [
-		'title' => $_lang['resource_description'].' (EN)',
-		'help' => $_lang['resource_description_help'],
-		'default' => '',
-		'save' => '',
-	],
-	'en_introtext' => [
-		'title' => $_lang['resource_summary'].' (EN)',
-		'help' => $_lang['resource_summary_help'],
-		'default' => '',
-		'save' => '',
-	],
-	'en_content' => [
-		'title' => $_lang['resource_content'].' (EN)',
-		'default' => '',
-		'save' => '',
-	],
-	'en_menutitle' => [
-		'title' => $_lang['resource_opt_menu_title'].' (EN)',
-		'help' => $_lang['resource_opt_menu_title_help'],
-		'default' => '',
-		'save' => '',
-	],
-	'en_seotitle' => [
-		'title' => $_lang['resource_title'].' SEO (EN)',
-		'default' => '',
-		'save' => '',
-	],
-	'en_seodescription' => [
-		'title' => $_lang['resource_description'].' SEO (EN)',
-		'default' => '',
-		'save' => '',
-	],
-];
+    [~~[(catalog_root)]~~]
 ```
 
-To enable a text editor for a content field, you must select ***Type: Rich Text*** for the field when setting the template fields in templatesEdit3.
+[See documentation here](https://seiger.github.io/seigerlang/)
