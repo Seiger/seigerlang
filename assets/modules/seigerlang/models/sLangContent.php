@@ -22,4 +22,18 @@ class sLangContent extends Eloquent\Model
             ->leftJoin('site_content', 's_lang_content.resource', '=', 'site_content.id')
             ->where('lang', '=', $locale);
     }
+
+    /**
+     * Get the menutitle attribute
+     *
+     * @return mixed
+     */
+    public function getMenutitleAttribute()
+    {
+        $menutitle_orig = $this->menutitle_orig ?? '';
+        $pagetitle_orig = $this->pagetitle_orig ?? '';
+        $menutitle = empty($this->menutitle) ? $menutitle_orig : $this->menutitle;
+        $pagetitle = empty($this->pagetitle) ? $pagetitle_orig : $this->pagetitle;
+        return empty($menutitle) ? $pagetitle : $menutitle;
+    }
 }
