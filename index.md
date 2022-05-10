@@ -1,6 +1,7 @@
 ## Welcome to sLang
 
-![Image](/images/slang.png)
+![slang](https://user-images.githubusercontent.com/12029039/167660172-9596574a-47ae-4304-a389-814bfa4c9e87.png)
+[![GitHub version](https://img.shields.io/badge/version-v.1.1.1-blue)](https://github.com/Seiger/seigerlang/releases)
 [![CMS Evolution](https://img.shields.io/badge/CMS-Evolution-brightgreen.svg)](https://github.com/evolution-cms/evolution)
 ![PHP version](https://img.shields.io/badge/PHP->=v7.4-red.svg?php=7.4)
 
@@ -9,9 +10,10 @@ Seiger Lang multi language Management Module for Evolution CMS admin panel.
 The work of the module is based on the use of the standard Laravel functionality for multilingualism.
 
 ## Features
-* Based on **templatesEdit3** plugin.
-* Automatic translation of phrases through Google
-* Automatic search for translations in templates
+- [x] Based on **templatesEdit3** plugin.
+- [x] Automatic translation of phrases through Google
+- [x] Automatic search for translations in templates
+- [x] Unlimited translation languages
 
 ## Use in templates
 Current language:
@@ -28,7 +30,24 @@ List of frontend languages:
 ```php
     [(s_lang_front)]
 ```
-## Setting ##
+
+Multilingual link:
+```php
+    [~~[(catalog_root)]~~]
+```
+
+## Content management
+
+Get resources with translations for the current language.
+```php
+    @foreach(\sLang\Models\sLangContent::originalAndLang(evo()->getConfig('lang'))->whereParent(11)->get() as $content)
+        <li class="brands__item">
+            <a class="text__mini" href="@makeUrl($content->id)">{{$content->menutitle}}</a>
+        </li>
+    @endforeach
+```
+
+## Setting
 This module uses the **templatesEdit3** plugin to display multilingual content fields in the site's admin area.
 
 If, after setting up the module, the multilingual fields are not displayed on the resource editing tab, then you need to check the file *MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php'*
