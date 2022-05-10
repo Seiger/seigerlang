@@ -1,37 +1,86 @@
 ## Welcome to sLang
 
-You can use the [editor on GitHub](https://github.com/Seiger/seigerlang/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![Image](/images/slang.png)
+[![CMS Evolution](https://img.shields.io/badge/CMS-Evolution-brightgreen.svg)](https://github.com/evolution-cms/evolution)
+![PHP version](https://img.shields.io/badge/PHP->=v7.4-red.svg?php=7.4)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Seiger Lang multi language Management Module for Evolution CMS admin panel.
 
-### Markdown
+The work of the module is based on the use of the standard Laravel functionality for multilingualism.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Features
+* Based on **templatesEdit3** plugin.
+* Automatic translation of phrases through Google
+* Automatic search for translations in templates
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+## Use in templates
+Current language:
+```php
+    [(lang)]
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+Translation of phrases:
+```php
+    @lang('phrase')
+```
 
-### Jekyll Themes
+List of frontend languages:
+```php
+    [(s_lang_front)]
+```
+## Setting ##
+This module uses the **templatesEdit3** plugin to display multilingual content fields in the site's admin area.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Seiger/seigerlang/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+If, after setting up the module, the multilingual fields are not displayed on the resource editing tab, then you need to check the file *MODX_BASE_PATH.'assets/plugins/templatesedit/configs/custom_fields.php'*
+```php
+<?php global $_lang, $modx; 
+return [
+	'en_pagetitle' => [
+		'title' => $_lang['resource_title'].' (EN)',
+		'help' => $_lang['resource_title_help'],
+		'default' => '',
+		'save' => '',
+	],
+	'en_longtitle' => [
+		'title' => $_lang['long_title'].' (EN)',
+		'help' => $_lang['resource_long_title_help'],
+		'default' => '',
+		'save' => '',
+	],
+	'en_description' => [
+		'title' => $_lang['resource_description'].' (EN)',
+		'help' => $_lang['resource_description_help'],
+		'default' => '',
+		'save' => '',
+	],
+	'en_introtext' => [
+		'title' => $_lang['resource_summary'].' (EN)',
+		'help' => $_lang['resource_summary_help'],
+		'default' => '',
+		'save' => '',
+	],
+	'en_content' => [
+		'title' => $_lang['resource_content'].' (EN)',
+		'default' => '',
+		'save' => '',
+	],
+	'en_menutitle' => [
+		'title' => $_lang['resource_opt_menu_title'].' (EN)',
+		'help' => $_lang['resource_opt_menu_title_help'],
+		'default' => '',
+		'save' => '',
+	],
+	'en_seotitle' => [
+		'title' => $_lang['resource_title'].' SEO (EN)',
+		'default' => '',
+		'save' => '',
+	],
+	'en_seodescription' => [
+		'title' => $_lang['resource_description'].' SEO (EN)',
+		'default' => '',
+		'save' => '',
+	],
+];
+```
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+To enable a text editor for a content field, you must select ***Type: Rich Text*** for the field when setting the template fields in templatesEdit3.
