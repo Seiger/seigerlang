@@ -31,9 +31,4 @@ List of frontend languages:
     [(s_lang_front)]
 ```
 
-Multilingual link:
-```php
-    [~~[(catalog_root)]~~]
-```
-
 [See documentation here](https://seiger.github.io/seigerlang/)
