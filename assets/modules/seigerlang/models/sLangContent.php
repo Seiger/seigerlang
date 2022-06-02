@@ -19,9 +19,12 @@ class sLangContent extends Eloquent\Model
      * @param  array  $tvNames
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOriginalAndLang($query, $locale, $tvNames = [])
+    public function scopeLangAndTvs($query, $locale, $tvNames = [])
     {
-        $query->select('*');
+        $query->select('*', 's_lang_content.resource as id', 's_lang_content.pagetitle as pagetitle');
+        $query->addSelect('s_lang_content.longtitle as longtitle', 's_lang_content.description as description');
+        $query->addSelect('s_lang_content.introtext as introtext', 's_lang_content.content as content');
+        $query->addSelect('s_lang_content.menutitle as menutitle');
 
         if (count($tvNames)) {
             foreach ($tvNames as $tvName) {
@@ -54,19 +57,5 @@ class sLangContent extends Eloquent\Model
     public function scopeActive($query)
     {
         return $query->where('published', '1')->where('deleted', '0');
-    }
-
-    /**
-     * Get the menutitle attribute
-     *
-     * @return mixed
-     */
-    public function getMenutitleAttribute()
-    {
-        $menutitle_orig = $this->menutitle_orig ?? '';
-        $pagetitle_orig = $this->pagetitle_orig ?? '';
-        $menutitle = empty($this->menutitle) ? $menutitle_orig : $this->menutitle;
-        $pagetitle = empty($this->pagetitle) ? $pagetitle_orig : $this->pagetitle;
-        return empty($menutitle) ? $pagetitle : $menutitle;
     }
 }
