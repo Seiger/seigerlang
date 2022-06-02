@@ -58,4 +58,20 @@ class sLangContent extends Eloquent\Model
     {
         return $query->where('published', '1')->where('deleted', '0');
     }
+
+    /**
+     * Filtering documents by TV parameter
+     *
+     * @param $query
+     * @param $name
+     * @param $value
+     * @return mixed
+     */
+    public function scopeWhereTv($query, $name, $value)
+    {
+        return $query->leftJoin('site_tmplvar_contentvalues', 'site_tmplvar_contentvalues.contentid', '=', 's_lang_content.resource')
+            ->leftJoin('site_tmplvars', 'site_tmplvars.id', '=', 'site_tmplvar_contentvalues.tmplvarid')
+            ->whereName($name)
+            ->whereValue($value);
+    }
 }
