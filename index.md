@@ -63,8 +63,8 @@ Get resources with translations for the current language.
 Get resources with TV parameters and filtering by TV parameter.
 ```php
 $mainMenu = sLangContent::langAndTvs(evo()->getConfig('lang'), ['tv_image'])
-    ->whereTv('tv_main_menu', 1)
     ->active()
+    ->whereTv('tv_main_menu', 1)
     ->orderBy('menuindex')
     ->get();
 ```
