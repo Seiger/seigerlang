@@ -72,4 +72,18 @@ class sLangContent extends Eloquent\Model
             ->whereName($name)
             ->whereValue($value);
     }
+
+    /**
+     * Get the menutitle attribute
+     *
+     * @return mixed
+     */
+    public function getMenutitleAttribute()
+    {
+        $menutitle_orig = $this->menutitle_orig ?? '';
+        $pagetitle_orig = $this->pagetitle_orig ?? '';
+        $menutitle = empty($this->attributes['menutitle']) ? $menutitle_orig : $this->attributes['menutitle'];
+        $pagetitle = empty($this->pagetitle) ? $pagetitle_orig : $this->pagetitle;
+        return empty($menutitle) ? $pagetitle : $menutitle;
+    }
 }
