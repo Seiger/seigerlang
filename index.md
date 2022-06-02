@@ -18,33 +18,55 @@ The work of the module is based on the use of the standard Laravel functionality
 ## Use in templates
 Current language:
 ```php
-    [(lang)]
+[(lang)]
 ```
 
 Translation of phrases:
 ```php
-    @lang('phrase')
+@lang('phrase')
 ```
 
-List of frontend languages:
+List of frontend languages by comma:
 ```php
-    [(s_lang_front)]
+[(s_lang_front)]
 ```
 
 Multilingual link:
 ```php
-    [~~[(catalog_root)]~~]
+[~~[(catalog_root)]~~]
+```
+
+Localized versions of your page for Google hreflang
+```php
+@php($sLang = new sLang())
+{!!$sLang->hrefLang()!!}
 ```
 
 ## Content management
 
+Implementing a Language Switcher
+```php
+    @foreach($sLang->langSwitcher() as $lang => $link)
+        <a href="{{$link}}">{{Str::ucfirst($lang)}}</a>
+    @endforeach
+```
+
 Get resources with translations for the current language.
 ```php
-    @foreach(\sLang\Models\sLangContent::originalAndLang(evo()->getConfig('lang'))->whereParent(11)->get() as $content)
+    @foreach(\sLang\Models\sLangContent::langAndTvs(evo()->getConfig('lang'))->whereParent(11)->get() as $content)
         <li class="brands__item">
             <a class="text__mini" href="@makeUrl($content->id)">{{$content->menutitle}}</a>
         </li>
     @endforeach
+```
+
+Get resources with TV parameters and filtering by TV parameter.
+```php
+$mainMenu = sLangContent::langAndTvs(evo()->getConfig('lang'), ['tv_image'])
+    ->whereTv('tv_main_menu', 1)
+    ->active()
+    ->orderBy('menuindex')
+    ->get();
 ```
 
 ## Setting
