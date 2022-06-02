@@ -31,7 +31,7 @@ if (!class_exists('sLang')) {
         {
             $this->doc = $doc;
             $this->evo = evo();
-            $this->params = $this->evo->event->params;
+            $this->params = $this->evo->event->params ?? [];
             $this->url = $this->moduleUrl();
 
             $this->tblSsystemSettings = $this->evo->getDatabase()->getFullTableName($this->tblSsystemSettings);
@@ -42,23 +42,47 @@ if (!class_exists('sLang')) {
         }
 
         /**
+         * List of frontend document languages
+         *
+         * @return array
+         */
+        public function langSwitcher(): array
+        {
+            $langFront = [$this->evo->config['manager_language']];
+            $sLangFront = $this->getConfigValue('s_lang_front');
+            $sLangDefault = $this->getConfigValue('s_lang_default');
+            $sLangDefaultShow = $this->getConfigValue('s_lang_default_show');
+            if (trim($sLangFront)) {
+                $langFront = explode(',', $sLangFront);
+            }
+            $baseUrl = str_replace($langFront, '/', request()->getRequestUri());
+            $baseUrl = str_replace(['////', '///', '//'], '/', $baseUrl);
+            $result = [];
+            foreach ($langFront as $item) {
+                if ($sLangDefault == $item && $sLangDefaultShow != 1) {
+                    $result[$item] = MODX_SITE_URL . ltrim($baseUrl, '/');
+                } else {
+                    $result[$item] = MODX_SITE_URL . $item . $baseUrl;
+                }
+            }
+            return $result;
+        }
+
+        /**
          * List of alternative site languages
          *
          * @return string
          */
-        public function hrefLangs(): string
+        public function hrefLang(): string
         {
             if (evo()->getConfig('s_lang_default_show', 0) == 1) {
                 $hrefLangs = '<link rel="alternate" href="' . MODX_SITE_URL . $this->langDefault() . '/" hreflang="x-default" />';
             } else {
                 $hrefLangs = '<link rel="alternate" href="' . MODX_SITE_URL . '" hreflang="x-default" />';
             }
-
-            foreach ($this->langFront() as $item) {
-                if ($item == $this->langDefault() && evo()->getConfig('s_lang_default_show', 0) != 1) {
-                    $hrefLangs .= '<link rel="alternate" href="' . MODX_SITE_URL . '" hreflang="' . $item . '" />';
-                } else {
-                    $hrefLangs .= '<link rel="alternate" href="' . MODX_SITE_URL . $item . '/" hreflang="' . $item . '" />';
+            foreach ($this->langSwitcher() as $lang => $link) {
+                if ($lang != evo()->getConfig('lang', 'uk')) {
+                    $hrefLangs .= '<link rel="alternate" href="' . $link . '" hreflang="' . $lang . '" />';
                 }
             }
             return $hrefLangs;

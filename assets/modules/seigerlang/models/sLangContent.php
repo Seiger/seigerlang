@@ -1,6 +1,7 @@
 <?php namespace sLang\Models;
 
 use Illuminate\Database\Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class sLangContent extends Eloquent\Model
@@ -11,13 +12,10 @@ class sLangContent extends Eloquent\Model
     /**
      * Get the content item with lang and original fields
      *
-     * @param $query
-     * @param $locale
-     * @return mixed
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $locale
-     * @param  array  $tvNames
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @param string $locale
+     * @param array $tvNames
+     * @return Builder
      */
     public function scopeLangAndTvs($query, $locale, $tvNames = [])
     {
@@ -51,8 +49,8 @@ class sLangContent extends Eloquent\Model
     /**
      * Only active resources
      *
-     * @param $query
-     * @return mixed
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeActive($query)
     {
@@ -62,10 +60,10 @@ class sLangContent extends Eloquent\Model
     /**
      * Filtering documents by TV parameter
      *
-     * @param $query
-     * @param $name
-     * @param $value
-     * @return mixed
+     * @param Builder $query
+     * @param string $name
+     * @param string|int $value
+     * @return Builder
      */
     public function scopeWhereTv($query, $name, $value)
     {
