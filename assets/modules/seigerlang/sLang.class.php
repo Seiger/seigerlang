@@ -42,33 +42,6 @@ if (!class_exists('sLang')) {
         }
 
         /**
-         * List of frontend document languages
-         *
-         * @return array
-         */
-        public function langSwitcher(): array
-        {
-            $langFront = [$this->evo->config['manager_language']];
-            $sLangFront = $this->getConfigValue('s_lang_front');
-            $sLangDefault = $this->getConfigValue('s_lang_default');
-            $sLangDefaultShow = $this->getConfigValue('s_lang_default_show');
-            if (trim($sLangFront)) {
-                $langFront = explode(',', $sLangFront);
-            }
-            $baseUrl = str_replace($langFront, '/', request()->getRequestUri());
-            $baseUrl = str_replace(['////', '///', '//'], '/', $baseUrl);
-            $result = [];
-            foreach ($langFront as $item) {
-                if ($sLangDefault == $item && $sLangDefaultShow != 1) {
-                    $result[$item] = MODX_SITE_URL . ltrim($baseUrl, '/');
-                } else {
-                    $result[$item] = MODX_SITE_URL . $item . $baseUrl;
-                }
-            }
-            return $result;
-        }
-
-        /**
          * List of alternative site languages
          *
          * @return string

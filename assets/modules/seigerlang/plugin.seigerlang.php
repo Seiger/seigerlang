@@ -143,55 +143,57 @@ if ($e->name == 'OnAfterLoadDocumentObject') {
  * Parameterization of the current language
  */
 if (in_array($e->name, ['OnPageNotFound'])) {
-    $hash = '';
-    $identifier = evo()->getConfig('error_page', 1);
-    $sLangDefault = evo()->getConfig('s_lang_default', 'uk');
+    if (!isset($e->params['have-redirect'])) {
+        $hash = '';
+        $identifier = evo()->getConfig('error_page', 1);
+        $sLangDefault = evo()->getConfig('s_lang_default', 'uk');
 
-    if (isset($_SERVER['REQUEST_URI'])) {
-        $url = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'), 2);
-        $sLangFront = explode(',', evo()->getConfig('s_lang_front', 'uk'));
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $url = explode('/', ltrim($_SERVER['REQUEST_URI'], '/'), 2);
+            $sLangFront = explode(',', evo()->getConfig('s_lang_front', 'uk'));
 
-        if (trim($url[0])) {
-            if ($url[0] == $sLangDefault && evo()->config['s_lang_default_show'] != 1) {
-                evo()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));
-                die;
-            }
+            if (trim($url[0])) {
+                if ($url[0] == $sLangDefault && evo()->config['s_lang_default_show'] != 1) {
+                    evo()->sendRedirect(str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']));
+                    die;
+                }
 
-            if (in_array($url[0], $sLangFront)) {
-                $sLangDefault = $url[0];
-                $_SERVER['REQUEST_URI'] = str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']);
+                if (in_array($url[0], $sLangFront)) {
+                    $sLangDefault = $url[0];
+                    $_SERVER['REQUEST_URI'] = str_replace($url[0] . '/', '', $_SERVER['REQUEST_URI']);
+                }
             }
         }
-    }
 
-    evo()->setLocale($sLangDefault);
-    evo()->config['lang'] = $sLangDefault;
+        evo()->setLocale($sLangDefault);
+        evo()->config['lang'] = $sLangDefault;
 
-    if (evo()->config['s_lang_default'] != $sLangDefault || evo()->config['s_lang_default_show'] == 1) {
-        evo()->config['base_url'] .= $sLangDefault.'/';
-    }
-
-    if (!isset($_SERVER['REQUEST_URI']) || !trim($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI'] == '/') {
-        $identifier = evo()->getConfig('site_start', 1);
-    } else {
-        $q = trim($_SERVER['REQUEST_URI'], '/');
-        $hash = '_'.md5(serialize($q));
-        $path = explode('?', $q);
-        $path = trim($path[0], '/');
-        if (array_key_exists($path, UrlProcessor::getFacadeRoot()->documentListing)) {
-            $identifier = UrlProcessor::getFacadeRoot()->documentListing[$path];
+        if (evo()->config['s_lang_default'] != $sLangDefault || evo()->config['s_lang_default_show'] == 1) {
+            evo()->config['base_url'] .= $sLangDefault . '/';
         }
+
+        if (!isset($_SERVER['REQUEST_URI']) || !trim($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI'] == '/') {
+            $identifier = evo()->getConfig('site_start', 1);
+        } else {
+            $q = trim($_SERVER['REQUEST_URI'], '/');
+            $hash = '_' . md5(serialize($q));
+            $path = explode('?', $q);
+            $path = trim($path[0], '/');
+            if (array_key_exists($path, UrlProcessor::getFacadeRoot()->documentListing)) {
+                $identifier = UrlProcessor::getFacadeRoot()->documentListing[$path];
+            }
+        }
+
+        evo()->systemCacheKey = $identifier . '_' . $sLangDefault . $hash;
+
+        if ($identifier == evo()->getConfig('error_page', 1) && $identifier != evo()->getConfig('site_start', 1)) {
+            evo()->invokeEvent('OnPageNotFound', ['have-redirect' => 1]);
+        }
+
+        evo()->invokeEvent('OnWebPageInit', ['lang' => $sLangDefault]);
+        evo()->sendForward($identifier);
+        exit();
     }
-
-    evo()->systemCacheKey = $identifier.'_'.$sLangDefault.$hash;
-
-    if ($identifier == evo()->getConfig('error_page', 1) && $identifier != evo()->getConfig('site_start', 1)) {
-        evo()->invokeEvent('OnPageNotFound');
-    }
-
-    evo()->invokeEvent('OnWebPageInit', ['lang' => $sLangDefault]);
-    evo()->sendForward($identifier);
-    exit();
 }
 
 if (in_array($e->name, ['OnWebPageInit'])) {
