@@ -187,7 +187,17 @@ if (in_array($e->name, ['OnPageNotFound'])) {
         evo()->systemCacheKey = $identifier . '_' . $sLangDefault . $hash;
 
         if ($identifier == evo()->getConfig('error_page', 1) && $identifier != evo()->getConfig('site_start', 1)) {
-            evo()->invokeEvent('OnPageNotFound', ['have-redirect' => 1]);
+            if (request()->is('api/*')) {
+                $response = [
+                    'status_code' => 404,
+                    'status' => 'error',
+                    'message' => 'Route not found.',
+                ];
+                header('HTTP/1.0 404 Not Found');
+                die(json_encode($response));
+            } else {
+                evo()->invokeEvent('OnPageNotFound', ['have-redirect' => 1]);
+            }
         }
 
         evo()->invokeEvent('OnWebPageInit', ['lang' => $sLangDefault]);
