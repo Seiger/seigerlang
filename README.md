@@ -26,6 +26,11 @@ Translation of phrases:
     @lang('phrase')
 ```
 
+Default language:
+```php
+    [(s_lang_default)]
+```
+
 List of frontend languages:
 ```php
     [(s_lang_front)]
