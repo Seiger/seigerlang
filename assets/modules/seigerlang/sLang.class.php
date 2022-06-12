@@ -20,23 +20,20 @@ if (!class_exists('sLang')) {
         public $siteContentFields = ['pagetitle', 'longtitle', 'description', 'introtext', 'content', 'menutitle', 'seotitle', 'seodescription'];
         public $url;
         public $baseUrl = MODX_BASE_URL . 'assets/modules/seigerlang/';
-        protected $doc;
         protected $params;
         protected $basePath = MODX_BASE_PATH . 'assets/modules/seigerlang/';
         protected $tblSsystemSettings = 'system_settings';
         protected $tblSiteContent = 'site_content';
         protected $tblLang = 's_lang_translates';
 
-        public function __construct($doc = [])
+        public function __construct()
         {
-            $this->doc = $doc;
-            $this->evo = evo();
-            $this->params = $this->evo->event->params ?? [];
+            $this->params = evo()->event->params ?? [];
             $this->url = $this->moduleUrl();
 
-            $this->tblSsystemSettings = $this->evo->getDatabase()->getFullTableName($this->tblSsystemSettings);
-            $this->tblSiteContent = $this->evo->getDatabase()->getFullTableName($this->tblSiteContent);
-            $this->tblLang = $this->evo->getDatabase()->getFullTableName($this->tblLang);
+            $this->tblSsystemSettings = evo()->getDatabase()->getFullTableName($this->tblSsystemSettings);
+            $this->tblSiteContent = evo()->getDatabase()->getFullTableName($this->tblSiteContent);
+            $this->tblLang = evo()->getDatabase()->getFullTableName($this->tblLang);
 
             Paginator::defaultView('pagination');
         }
@@ -48,7 +45,7 @@ if (!class_exists('sLang')) {
          */
         public function langSwitcher(): array
         {
-            $langFront = [$this->evo->config['manager_language']];
+            $langFront = [evo()->getConfig('manager_language', 'uk')];
             $sLangFront = $this->getConfigValue('s_lang_front');
             $sLangDefault = $this->getConfigValue('s_lang_default');
             $sLangDefaultShow = $this->getConfigValue('s_lang_default_show');
@@ -109,7 +106,7 @@ if (!class_exists('sLang')) {
          */
         public function langDefault(): string
         {
-            return $this->evo->getConfig("s_lang_default", 'uk');
+            return evo()->getConfig("s_lang_default", 'uk');
         }
 
         /**
@@ -119,7 +116,7 @@ if (!class_exists('sLang')) {
          */
         public function langConfig(): array
         {
-            $langConfig = [$this->evo->config['manager_language']];
+            $langConfig = [evo()->getConfig('manager_language', 'uk')];
             $sLangConfig = $this->getConfigValue('s_lang_config');
             if (trim($sLangConfig)) {
                 $langConfig = explode(',', $sLangConfig);
@@ -134,7 +131,7 @@ if (!class_exists('sLang')) {
          */
         public function langFront(): array
         {
-            $langFront = [$this->evo->config['manager_language']];
+            $langFront = [evo()->getConfig('manager_language', 'uk')];
             $sLangFront = $this->getConfigValue('s_lang_front');
             if (trim($sLangFront)) {
                 $langFront = explode(',', $sLangFront);
@@ -241,10 +238,10 @@ if (!class_exists('sLang')) {
              */
             $columns = [];
             $needs = [];
-            $query = $this->evo->getDatabase()->query("DESCRIBE {$this->tblLang}");
+            $query = evo()->getDatabase()->query("DESCRIBE {$this->tblLang}");
 
             if ($query) {
-                $fields = $this->evo->getDatabase()->makeArray($query);
+                $fields = evo()->getDatabase()->makeArray($query);
 
                 foreach ($fields as $field) {
                     $columns[$field['Field']] = $field;
@@ -260,7 +257,7 @@ if (!class_exists('sLang')) {
             if (count($needs)) {
                 $need = implode(', ', $needs);
                 $query = "ALTER TABLE `{$this->tblLang}` {$need}";
-                $this->evo->getDatabase()->query($query);
+                evo()->getDatabase()->query($query);
             }
 
             /**
@@ -495,7 +492,7 @@ if (!class_exists('sLang')) {
             /**
              * Clearing the cache
              */
-            return $this->evo->clearCache('full');
+            return evo()->clearCache('full');
         }
 
         /**
@@ -707,11 +704,11 @@ if (!class_exists('sLang')) {
         public function view($tpl, $data = [])
         {
             global $_lang;
-            if (is_file($this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php')) {
-                require_once $this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php';
+            if (is_file($this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
+                require_once $this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
             }
 
-            $data = array_merge($data, ['modx' => $this->evo, 'data' => $data, '_lang' => $_lang]);
+            $data = array_merge($data, ['modx' => evo(), 'data' => $data, '_lang' => $_lang]);
 
             View::getFinder()->setPaths([
                 $this->basePath . 'views',
@@ -730,8 +727,8 @@ if (!class_exists('sLang')) {
         protected function getElementRow($data)
         {
             global $_lang;
-            if (is_file($this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php')) {
-                require_once $this->basePath . 'lang/' . $this->evo->config['manager_language'] . '.php';
+            if (is_file($this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php')) {
+                require_once $this->basePath . 'lang/' . evo()->getConfig('manager_language', 'uk') . '.php';
             }
 
             $html = '<tr><td>'.$data->key.'</td>';
@@ -824,7 +821,7 @@ if (!class_exists('sLang')) {
          */
         protected function updateTblSetting($name, $value)
         {
-            return $this->evo->getDatabase()->query("REPLACE INTO {$this->tblSsystemSettings} (`setting_name`, `setting_value`) VALUES ('{$name}', '{$value}')");
+            return evo()->getDatabase()->query("REPLACE INTO {$this->tblSsystemSettings} (`setting_name`, `setting_value`) VALUES ('{$name}', '{$value}')");
         }
 
         /**
