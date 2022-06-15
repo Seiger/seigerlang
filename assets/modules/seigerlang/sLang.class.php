@@ -152,10 +152,11 @@ if (!class_exists('sLang')) {
                     $where[] = '`'.$item.'` LIKE \'%'.request()->search.'%\'';
                 }
                 $translates = sLangTranslate::whereRaw(implode(' OR ', $where))->orderByDesc('tid')->paginate(17);
+                $translates->withPath($this->url.'&search='.request()->search);
             } else {
                 $translates = sLangTranslate::orderByDesc('tid')->paginate(17);
+                $translates->withPath($this->url);
             }
-            $translates->withPath($this->url);
 
             return $translates;
         }
