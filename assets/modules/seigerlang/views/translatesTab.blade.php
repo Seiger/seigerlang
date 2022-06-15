@@ -1,5 +1,14 @@
 <form action="{!!$url!!}&get=translates&action=save" method="post">
     <p>{!! $_lang['slang_example_usage'] !!}</p>
+    <div class="input-group">
+        <input type="text" class="form-control" name="search" value="{{request()->search ?? ''}}" />
+        <span class="input-group-btn">
+            <button class="btn btn-light js_search" type="button" title="Search" style="padding:0 5px;color:#0275d8;">
+                <i class="fa fa-search" style="font-size:large;margin:5px;"></i>
+            </button>
+        </span>
+    </div>
+    <div class="split my-1"></div>
     <div class="table-responsive langTable">
         <table class="table table-condensed table-hover sectionTrans">
             <thead>
@@ -154,6 +163,23 @@
                     $('#addTranslate').modal('hide');
                 }
             });
+        });
+
+        /*jQuery(document).on("keyup", "[name=\"search\"]", function () {
+            var _form = jQuery(this);
+
+            jQuery.ajax({
+                url: '{!!$url!!}&get=translates&action=search',
+                type: 'POST',
+                data: _form.serialize(),
+                cache: false,
+                success: function (ajax) {}
+            });
+        });*/
+
+        jQuery(document).on("click", ".js_search", function () {
+            var _form = jQuery(document).find("[name=\"search\"]");
+            window.location.href = window.location.href+'&'+_form.serialize();
         });
     </script>
     <style>

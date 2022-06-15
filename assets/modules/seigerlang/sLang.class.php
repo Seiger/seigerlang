@@ -146,7 +146,15 @@ if (!class_exists('sLang')) {
          */
         public function dictionary()
         {
-            $translates = sLangTranslate::orderByDesc('tid')->paginate(17);
+            if (request()->has('search')) {
+                $where[] = '`key` LIKE \'%'.request()->search.'%\'';
+                foreach ($this->langConfig() as $item) {
+                    $where[] = '`'.$item.'` LIKE \'%'.request()->search.'%\'';
+                }
+                $translates = sLangTranslate::whereRaw(implode(' OR ', $where))->orderByDesc('tid')->paginate(17);
+            } else {
+                $translates = sLangTranslate::orderByDesc('tid')->paginate(17);
+            }
             $translates->withPath($this->url);
 
             return $translates;
