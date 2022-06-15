@@ -52,7 +52,7 @@ if (!class_exists('sLang')) {
             if (trim($sLangFront)) {
                 $langFront = explode(',', $sLangFront);
             }
-            $baseUrl = str_replace($langFront, '/', request()->getRequestUri());
+            $baseUrl = Str::replaceFirst(evo()->getConfig('lang', 'uk').'/', '/', request()->getRequestUri());
             $baseUrl = str_replace(['////', '///', '//'], '/', $baseUrl);
             $result = [];
             foreach ($langFront as $item) {
