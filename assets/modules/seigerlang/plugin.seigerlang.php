@@ -23,11 +23,7 @@ if ($e->name == 'OnParseDocument') {
     if ($match[0]) {
         foreach ($match[0] as $key => $value) {
             if ($match[1][$key] == evo()->getConfig('site_start', 1)) {
-                if (evo()->getConfig('lang') == $sLang->langDefault()) {
-                    evo()->documentOutput = str_replace($value, $base_url, evo()->documentOutput);
-                } else {
-                    evo()->documentOutput = str_replace($value, $base_url . evo()->getConfig('lang') . '/', evo()->documentOutput);
-                }
+                evo()->documentOutput = str_replace($value, $base_url, evo()->documentOutput);
             } else {
                 if (evo()->getConfig('lang') != $sLang->langDefault()) {
                     evo()->setConfig('virtual_dir', evo()->getConfig('lang').'/');
