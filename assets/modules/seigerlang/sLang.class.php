@@ -49,6 +49,7 @@ if (!class_exists('sLang')) {
             $sLangFront = $this->getConfigValue('s_lang_front');
             $sLangDefault = $this->getConfigValue('s_lang_default');
             $sLangDefaultShow = $this->getConfigValue('s_lang_default_show');
+            $langList = $this->langList();
             if (trim($sLangFront)) {
                 $langFront = explode(',', $sLangFront);
             }
@@ -56,10 +57,11 @@ if (!class_exists('sLang')) {
             $baseUrl = str_replace(['////', '///', '//'], '/', $baseUrl);
             $result = [];
             foreach ($langFront as $item) {
+                $result[$item] = $langList[$item];
                 if ($sLangDefault == $item && $sLangDefaultShow != 1) {
-                    $result[$item] = MODX_SITE_URL . ltrim($baseUrl, '/');
+                    $result[$item]['link'] = MODX_SITE_URL . ltrim($baseUrl, '/');
                 } else {
-                    $result[$item] = MODX_SITE_URL . $item . $baseUrl;
+                    $result[$item]['link'] = MODX_SITE_URL . $item . $baseUrl;
                 }
             }
             return $result;
@@ -77,9 +79,9 @@ if (!class_exists('sLang')) {
             } else {
                 $hrefLangs = '<link rel="alternate" href="' . MODX_SITE_URL . '" hreflang="x-default" />';
             }
-            foreach ($this->langSwitcher() as $lang => $link) {
+            foreach ($this->langSwitcher() as $lang => $item) {
                 if ($lang != evo()->getConfig('lang', 'uk')) {
-                    $hrefLangs .= '<link rel="alternate" href="' . $link . '" hreflang="' . $lang . '" />';
+                    $hrefLangs .= '<link rel="alternate" href="' . $item['link'] . '" hreflang="' . $lang . '" />';
                 }
             }
             return $hrefLangs;
