@@ -47,7 +47,6 @@ switch ($data['get']) {
 
             // Default language display
             $sLang->setLangDefaultShow($_POST['s_lang_default_show']);
-            $sLang->evo->config['s_lang_default_show'] = $_POST['s_lang_default_show'];
 
             // List of site languages
             $sLang->setLangConfig($_POST['s_lang_config']);

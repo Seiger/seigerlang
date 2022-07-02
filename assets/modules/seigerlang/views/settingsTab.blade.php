@@ -14,7 +14,7 @@
             </td>
             <td width="200px;">
                 <input type="hidden" name="s_lang_default_show" value="0">
-                <label><input type="checkbox" name="s_lang_default_show" value="1"@if (1 == $sLang->evo->config['s_lang_default_show']) checked @endif()>&emsp;<b>{{$_lang['slang_use_url']}}</b></label>
+                <label><input type="checkbox" name="s_lang_default_show" value="1"@if (1 == evo()->getConfig('s_lang_default_show')) checked @endif()>&emsp;<b>{{$_lang['slang_use_url']}}</b></label>
             </td>
         </tr>
         <tr>
