@@ -4,6 +4,7 @@ use EvolutionCMS\Facades\UrlProcessor;
 use Illuminate\Database\Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class sLangContent extends Eloquent\Model
 {
@@ -146,6 +147,33 @@ class sLangContent extends Eloquent\Model
     public function scopeActive($query)
     {
         return $query->where('published', '1')->where('deleted', '0');
+    }
+
+    /**
+     * Filter search
+     *
+     * @return mixed
+     */
+    public function scopeSearch()
+    {
+        if (request()->has('search')) {
+            $fields = collect(['pagetitle', 'longtitle']);
+
+            $search = Str::of(request('search'))
+                ->stripTags()
+                ->replaceMatches('/[^\p{L}\p{N}\@\.!#$%&\'*+-\/=?^_`{|}~]/iu', ' ') // allowed symbol in email
+                ->replaceMatches('/(\s){2,}/', '$1') // removing extra spaces
+                ->trim()->explode(' ')
+                ->filter(fn($word) => mb_strlen($word) > 2);
+
+            $select = collect([0]);
+
+            $search->map(fn($word) => $fields->map(fn($field) => $select->push("(CASE WHEN `".DB::getTablePrefix()."s_lang_content`.`{$field}` LIKE '%{$word}%' THEN 1 ELSE 0 END)"))); // Generate points source
+
+            return $this->addSelect('*', DB::Raw('(' . $select->implode(' + ') . ') as points'))
+                ->when($search->count(), fn($query) => $query->where(fn($query) => $search->map(fn($word) => $fields->map(fn($field) => $query->orWhere($field, 'like', "%{$word}%")))))
+                ->orderByDesc('points');
+        }
     }
 
     /**
