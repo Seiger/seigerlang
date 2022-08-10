@@ -57,18 +57,18 @@ Localized versions of your page for Google hreflang
 
 Implementing a Language Switcher
 ```php
-    @foreach($sLang->langSwitcher() as $lang => $link)
-        <a href="{{$link}}">{{Str::ucfirst($lang)}}</a>
-    @endforeach
+@foreach($sLang->langSwitcher() as $lang => $link)
+    <a href="{{$link}}">{{Str::ucfirst($lang)}}</a>
+@endforeach
 ```
 
 Get resources with translations for the current language.
 ```php
-    @foreach(\sLang\Models\sLangContent::langAndTvs(evo()->getConfig('lang'))->whereParent(11)->get() as $content)
-        <li class="brands__item">
-            <a class="text__mini" href="@makeUrl($content->id)">{{$content->menutitle}}</a>
-        </li>
-    @endforeach
+@foreach(\sLang\Models\sLangContent::langAndTvs(evo()->getConfig('lang'))->whereParent(11)->get() as $content)
+    <li class="brands__item">
+        <a class="text__mini" href="@makeUrl($content->id)">{{$content->menutitle}}</a>
+    </li>
+@endforeach
 ```
 
 Get resources with TV parameters and filtering by TV parameter.
