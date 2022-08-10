@@ -15,6 +15,12 @@ The work of the module is based on the use of the standard Laravel functionality
 - [x] Automatic search for translations in templates
 - [x] Unlimited translation languages
 
+## Use in controllers
+For using this module on front pages your need add few includes to base controller
+```php
+require_once MODX_BASE_PATH . 'assets/modules/seigerlang/sLang.class.php';
+```
+
 ## Use in templates
 Current language:
 ```php
@@ -28,7 +34,7 @@ Translation of phrases:
 
 Default language:
 ```php
-    [(s_lang_default)]
+[(s_lang_default)]
 ```
 
 List of frontend languages by comma:
