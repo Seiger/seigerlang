@@ -15,25 +15,45 @@ The work of the module is based on the use of the standard Laravel functionality
 - [x] Automatic search for translations in templates
 - [x] Unlimited translation languages
 
+## Requirements
+Before installing the module, make sure you have the templatesEdit3 plugin installed.
+
+## Use in controllers
+For using this module on front pages your need add few includes to base controller
+```php
+require_once MODX_BASE_PATH . 'assets/modules/seigerlang/sLang.class.php';
+```
+
 ## Use in templates
 Current language:
 ```php
-    [(lang)]
+[(lang)]
 ```
 
 Translation of phrases:
 ```php
-    @lang('phrase')
+@lang('phrase')
 ```
 
 Default language:
 ```php
-    [(s_lang_default)]
+[(s_lang_default)]
 ```
 
-List of frontend languages:
+List of frontend languages by comma:
 ```php
-    [(s_lang_front)]
+[(s_lang_front)]
+```
+
+Multilingual link:
+```php
+[~~[(catalog_root)]~~]
+```
+
+Localized versions of your page for Google hreflang
+```php
+@php($sLang = new sLang())
+{!!$sLang->hrefLang()!!}
 ```
 
 [See documentation here](https://seiger.github.io/seigerlang/)
