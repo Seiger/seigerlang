@@ -15,6 +15,9 @@ The work of the module is based on the use of the standard Laravel functionality
 - [x] Automatic search for translations in templates
 - [x] Unlimited translation languages
 
+## Requirements
+Before installing the module, make sure you have the templatesEdit3 plugin installed.
+
 ## Use in controllers
 For using this module on front pages your need add few includes to base controller
 ```php
