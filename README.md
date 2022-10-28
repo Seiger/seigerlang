@@ -1,3 +1,5 @@
+# This is an old module, it is no longer supported. Use the new [sLang](https://github.com/Seiger/slang) module instead.
+
 # Welcome to sLang
 
 ![slang](https://user-images.githubusercontent.com/12029039/167660172-9596574a-47ae-4304-a389-814bfa4c9e87.png)
